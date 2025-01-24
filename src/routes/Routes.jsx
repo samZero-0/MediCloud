@@ -8,6 +8,13 @@ import NotFound from "../pages/404Page";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
+import ShopPage from "../pages/Shop";
+import CategoryDetails from "../pages/ProductDetails";
+import Cart from "../pages/Cart";
+import CheckoutPage from "../pages/Checkout";
+import InvoicePage from "../pages/Invoice";
+import Dashboard from "../pages/Admin/Dashboard";
+import SellerDashboard from "../pages/Seller/Dashboard";
 // import Login from "../pages/Login";
 // import Register from "../pages/Register";
 // import NotFound from "../pages/404Page"
@@ -41,6 +48,39 @@ import Home from "../pages/Home";
           path: '/register',
           element: <Register></Register>
         },
+        {
+          path: '/shop',
+          element: <ShopPage></ShopPage>
+        },
+        {
+          path: '/details',
+          element: <CategoryDetails></CategoryDetails>
+        },
+        {
+          path: '/cart',
+          element: <Cart></Cart>
+        },
+        {
+          path: '/checkoutPage',
+          element: <CheckoutPage></CheckoutPage>
+        },
+        {
+          path: '/invoice',
+          element: <InvoicePage></InvoicePage>
+        },
+        {
+          path: '/dashboard',
+          element: <Dashboard></Dashboard>
+        },
+        {
+          path: '/seller',
+          element: <SellerDashboard></SellerDashboard>
+        },
+        
+
+
+
+
 
 
 

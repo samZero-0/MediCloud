@@ -4,6 +4,7 @@ import { AiOutlineLogin } from "react-icons/ai";
 import { AuthContext } from "../providers/AuthProvider";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { FaCartPlus } from "react-icons/fa";
 
 const Navbar = () => {
   const [hamburger, setHamburger] = useState(false);
@@ -33,7 +34,7 @@ const Navbar = () => {
             </button>
             <Link to="/" className="btn btn-ghost text-xl hidden lg:block">
               <img
-                src="/logo-removebg-preview.png"
+                src="/logo.png"
                 alt="Logo"
                 className="md:block w-[200px]"
               />
@@ -47,16 +48,26 @@ const Navbar = () => {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/allFoods">All Foods</Link>
+                <Link to="/shop">Shop</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/gallery">Gallery</Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
           {/* Navbar End */}
           <div className="navbar-end flex items-center">
+            <div className="px-11 ">
+              <FaCartPlus className="text-2xl "></FaCartPlus>
+            </div>
+            <div className="px-5 ">
+              <select name="" id="" className="border rounded-xl  p-2">
+              <option value="">Select Language</option>
+              <option value="">English</option>
+              <option value="">Bangla</option>
+              </select>
+            </div>
             <div className="md:mr-8 mr-3">
               <DarkModeSwitch
                 checked={isDarkMode}
@@ -76,14 +87,12 @@ const Navbar = () => {
                   className="menu dropdown-content bg-base-200 rounded-box z-[50] mt-2 w-52 p-2 shadow"
                 >
                   <li>
-                    <Link to="/myOrders">My orders</Link>
+                    <Link to="/myOrders">Update  profile</Link>
                   </li>
                   <li>
-                    <Link to="/addFood">Add food</Link>
+                    <Link to="/addFood">Dashboard</Link>
                   </li>
-                  <li>
-                    <Link to="/myFoods">My Foods</Link>
-                  </li>
+                
                   <li>
                     <button onClick={logOut}>Logout</button>
                   </li>
@@ -92,7 +101,7 @@ const Navbar = () => {
             ) : (
               showLoginButton && (
                 <NavLink to="/login" className="btn bg-[#a0e2ff] hidden lg:flex">
-                  <AiOutlineLogin className="text-xl" /> Login/Register
+                  <AiOutlineLogin className="text-xl" /> Join Us
                 </NavLink>
               )
             )}
@@ -120,7 +129,7 @@ const Navbar = () => {
               </li>
               <li>
                 <Link to="/login" onClick={() => setHamburger(false)}>
-                  Login/Register
+                  Join Us
                 </Link>
               </li>
             </ul>
