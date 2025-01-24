@@ -1,4 +1,3 @@
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
@@ -6,8 +5,19 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Banner = () => {
+  const [banner, setBanner] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('https://assignment-12-blue.vercel.app/active-banners')
+      .then((res) => setBanner(res.data))
+      .catch((err) => console.error('Error fetching banners:', err));
+  }, []);
+
   return (
     <div className="relative w-full h-[600px]">
       <Swiper
@@ -20,21 +30,19 @@ const Banner = () => {
         loop={true}
         className="w-full h-full"
       >
-        <SwiperSlide>
-          <div className="w-full h-full bg-blue-500 flex items-center justify-center">
-            <h2 className="text-4xl font-bold text-white">Slide 1</h2>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="w-full h-full bg-green-500 flex items-center justify-center">
-            <h2 className="text-4xl font-bold text-white">Slide 2</h2>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="w-full h-full bg-red-500 flex items-center justify-center">
-            <h2 className="text-4xl font-bold text-white">Slide 3</h2>
-          </div>
-        </SwiperSlide>
+        {banner.map((b) => (
+          <SwiperSlide key={b._id}>
+            <div
+              className="w-full h-full bg-cover bg-center flex items-center justify-center"
+              style={{ backgroundImage: `url(${b.bannerImage})` }}
+            >
+              <div className='flex flex-col gap-3'>
+              <h2 className="text-4xl font-bold text-black text-center">{b.title}</h2>
+              <h3 className="text-4xl font-bold text-black text-center">{b.description}</h3>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );

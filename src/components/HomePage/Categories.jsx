@@ -16,10 +16,10 @@ const CategoryCard = ({ category }) => (
 );
 
 const CategoryCardSection = () => {
-  const [categories, setCategories] = useState([]); // Correctly initialize state
+  const [categories, setCategories] = useState([]); 
 
   useEffect(() => {
-    // Fetch categories data when the component mounts
+   
     axios
       .get("https://assignment-12-blue.vercel.app/categories")
       .then((res) => {
@@ -28,7 +28,7 @@ const CategoryCardSection = () => {
       .catch((err) => {
         console.error("Failed to fetch categories:", err);
       });
-  }, []); // Empty dependency array ensures this runs only once
+  }, []); 
 
   return (
     <section className="py-12 bg-gray-100">

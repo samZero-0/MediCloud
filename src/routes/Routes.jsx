@@ -15,6 +15,7 @@ import CheckoutPage from "../pages/Checkout";
 import InvoicePage from "../pages/Invoice";
 import Dashboard from "../pages/Admin/Dashboard";
 import SellerDashboard from "../pages/Seller/Dashboard";
+import ManageBanner from "../pages/Admin/ManageBanner";
 // import Login from "../pages/Login";
 // import Register from "../pages/Register";
 // import NotFound from "../pages/404Page"
@@ -75,6 +76,10 @@ import SellerDashboard from "../pages/Seller/Dashboard";
         {
           path: '/seller',
           element: <SellerDashboard></SellerDashboard>
+        },
+        {
+          path: '/banner',
+          element: <ManageBanner></ManageBanner>
         },
         
 

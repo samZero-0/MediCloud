@@ -1,0 +1,41 @@
+[
+
+   
+        {
+            "bannerImage": "https://via.placeholder.com/1200x600/4A90E2/FFFFFF?text=Summer+Sale",
+            "title": "Summer Mega Sale",
+            "description": "Enjoy up to 70% off on top brands and trending collections",
+            "sellerName": "GlobalMart",
+            "activeStatus": true
+        },
+        {
+            "bannerImage": "https://via.placeholder.com/1200x600/2ECC71/FFFFFF?text=New+Arrivals",
+            "title": "Fresh Fashion Collection",
+            "description": "Explore the latest trends and styles for this season",
+            "sellerName": "StyleHub",
+            "activeStatus": true
+        },
+        {
+            "bannerImage": "https://via.placeholder.com/1200x600/F39C12/FFFFFF?text=Electronics+Deals",
+            "title": "Tech Weekend Bonanza",
+            "description": "Incredible discounts on smartphones, laptops, and gadgets",
+            "sellerName": "TechZone",
+            "activeStatus": true
+        },
+        {
+            "bannerImage": "https://via.placeholder.com/1200x600/E74C3C/FFFFFF?text=Home+Essentials",
+            "title": "Home & Living Clearance",
+            "description": "Massive discounts on furniture, decor, and kitchen essentials",
+            "sellerName": "ComfortNest",
+            "activeStatus": false
+        },
+        {
+            "bannerImage": "https://via.placeholder.com/1200x600/9B59B6/FFFFFF?text=Beauty+Sale",
+            "title": "Beauty & Wellness Expo",
+            "description": "Flat 50% off on premium skincare and cosmetic brands",
+            "sellerName": "GlowWorld",
+            "activeStatus": true
+        }
+    
+
+]
