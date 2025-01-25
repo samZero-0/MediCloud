@@ -1,65 +1,50 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Trash2, Plus, Minus, ArrowRight, PackageOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { AuthContext } from '../providers/AuthProvider';
 
 const Cart = () => {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Amoxicillin",
-      company: "Pfizer",
-      price: 12.99,
-      quantity: 2,
-      image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800"
-    },
-    {
-      id: 2,
-      name: "Paracetamol",
-      company: "GSK",
-      price: 5.99,
-      quantity: 1,
-      image: "https://images.unsplash.com/photo-1584362917165-526a968579e8?w=800"
-    },
-    {
-      id: 3,
-      name: "Ibuprofen",
-      company: "Novartis",
-      price: 8.99,
-      quantity: 3,
-      image: "https://images.unsplash.com/photo-1585435557343-3b092031a831?w=800"
-    }
-  ]);
+  const { cart, setCart,setAmount  } = useContext(AuthContext);
 
   const handleQuantityChange = (id, change) => {
-    setCartItems(items =>
-      items.map(item => {
-        if (item.id === id) {
-          const newQuantity = item.quantity + change;
-          return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
-        }
-        return item;
-      })
+    setCart(prevCart => 
+      prevCart.map(item => 
+        item._id === id 
+          ? { 
+              ...item, 
+              quantity: Math.max(1, (item.quantity || 1) + change) 
+            } 
+          : item
+      )
     );
   };
 
   const handleRemoveItem = (id) => {
-    setCartItems(items => items.filter(item => item.id !== id));
+    setCart(prevCart => prevCart.filter(item => item._id !== id));
   };
 
   const handleClearCart = () => {
-    setCartItems([]);
+    setCart([]);
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const tax = subtotal * 0.1; // 10% tax
-  const total = subtotal + tax;
+  // Ensure every item has a quantity
+  const processedCart = cart.map(item => ({
+    ...item,
+    quantity: item.quantity || 1
+  }));
 
-  if (cartItems.length === 0) {
+  // Calculate totals
+  const subtotal = processedCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const tax = subtotal * 0.1;
+  const total = subtotal + tax;
+  setAmount(total)
+  
+  if (cart.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
@@ -68,7 +53,7 @@ const Cart = () => {
             <PackageOpen className="w-16 h-16 text-gray-400" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
-          <p className="text-gray-600 mb-6">Looks like you haven't added any medicines yet.</p>
+          <p className="text-gray-600 mb-6">Looks like you haven't added any items yet.</p>
           <button
             onClick={() => navigate('/medicines')}
             className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -90,7 +75,7 @@ const Cart = () => {
             <ShoppingCart className="w-8 h-8 text-blue-600" />
             <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
             <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
-              {cartItems.length} items
+              {cart.length} items
             </span>
           </div>
           <button
@@ -107,9 +92,9 @@ const Cart = () => {
           <div className="flex-grow">
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
               <div className="divide-y divide-gray-200">
-                {cartItems.map((item) => (
+                {processedCart.map(item => (
                   <motion.div
-                    key={item.id}
+                    key={item._id}
                     layout
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -118,12 +103,12 @@ const Cart = () => {
                   >
                     <img
                       src={item.image}
-                      alt={item.name}
+                      alt={item.medicineName}
                       className="w-20 h-20 object-cover rounded-lg"
                     />
                     <div className="flex-grow">
-                      <h3 className="text-lg font-medium text-gray-900">{item.name}</h3>
-                      <p className="text-sm text-gray-500">{item.company}</p>
+                      <h3 className="text-lg font-medium text-gray-900">{item.medicineName}</h3>
+                      <p className="text-sm text-gray-500">{item.manufactureName}</p>
                       <div className="mt-1 text-sm font-medium text-blue-600">
                         ${item.price} per unit
                       </div>
@@ -131,7 +116,7 @@ const Cart = () => {
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-1">
                         <button
-                          onClick={() => handleQuantityChange(item.id, -1)}
+                          onClick={() => handleQuantityChange(item._id, -1)}
                           className="p-1 hover:bg-white rounded-md transition-colors"
                           disabled={item.quantity <= 1}
                         >
@@ -139,7 +124,7 @@ const Cart = () => {
                         </button>
                         <span className="w-8 text-center font-medium">{item.quantity}</span>
                         <button
-                          onClick={() => handleQuantityChange(item.id, 1)}
+                          onClick={() => handleQuantityChange(item._id, 1)}
                           className="p-1 hover:bg-white rounded-md transition-colors"
                         >
                           <Plus className="w-4 h-4" />
@@ -148,7 +133,7 @@ const Cart = () => {
                       <div className="text-right">
                         <div className="font-medium">${(item.price * item.quantity).toFixed(2)}</div>
                         <button
-                          onClick={() => handleRemoveItem(item.id)}
+                          onClick={() => handleRemoveItem(item._id)}
                           className="text-sm text-red-600 hover:text-red-700"
                         >
                           Remove
@@ -180,13 +165,16 @@ const Cart = () => {
                     <span className="text-lg font-bold text-blue-600">${total.toFixed(2)}</span>
                   </div>
                 </div>
-                <button
+               <Link to="/checkoutPage">
+
+               <button
                   onClick={() => navigate('/checkout')}
                   className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 mt-6"
                 >
                   Proceed to Checkout
                   <ArrowRight className="w-4 h-4" />
                 </button>
+               </Link>
               </div>
             </div>
           </div>

@@ -58,9 +58,11 @@ const Navbar = () => {
 
           {/* Navbar End */}
           <div className="navbar-end flex items-center">
-            <div className="px-11 ">
+           <Link to='/cart'>
+           <div className="px-11 " >
               <FaCartPlus className="text-2xl "></FaCartPlus>
             </div>
+           </Link>
             <div className="px-5 ">
               <select name="" id="" className="border rounded-xl  p-2">
               <option value="">Select Language</option>
@@ -90,7 +92,7 @@ const Navbar = () => {
                     <Link to="/myOrders">Update  profile</Link>
                   </li>
                   <li>
-                    <Link to="/addFood">Dashboard</Link>
+                    <Link to="/userDashboard">Dashboard</Link>
                   </li>
                 
                   <li>
@@ -122,11 +124,7 @@ const Navbar = () => {
                   All Foods
                 </Link>
               </li>
-              <li>
-                <Link to="/gallery" onClick={() => setHamburger(false)}>
-                  Gallery
-                </Link>
-              </li>
+            
               <li>
                 <Link to="/login" onClick={() => setHamburger(false)}>
                   Join Us

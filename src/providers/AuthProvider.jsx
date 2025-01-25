@@ -21,7 +21,9 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isDarkMode, setDarkMode] = useState(false);
-
+    const [cart,setCart] = useState([]);
+    const [amount,setAmount] = useState(0);
+    const [invoice, setInvoice] = useState([]);
 
     const toggleDarkMode = () => {
         setDarkMode((prevMode) => !prevMode);
@@ -114,7 +116,13 @@ const AuthProvider = ({ children }) => {
         setUser,
         toggleDarkMode,
         isDarkMode,
-        setDarkMode
+        setDarkMode,
+        cart,
+        setCart,
+        setAmount,
+        amount,
+        invoice,
+        setInvoice
     };
 
    

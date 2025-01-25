@@ -1,38 +1,82 @@
-import  { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
+import { AuthContext } from '../providers/AuthProvider';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-// Make sure to replace with your actual Stripe publishable key
-const stripePromise = loadStripe('your_stripe_publishable_key');
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
-const CheckoutForm = ({ grandTotal, onSuccess }) => {
+const CheckoutForm = ({ onSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(null);
+  const [clientSecret, setClientSecret] = useState('');
   const [processing, setProcessing] = useState(false);
+  const { amount,user,cart,setCart,setInvoice } = useContext(AuthContext);
+
+  useEffect(() => {   
+    axios.post('https://assignment-12-blue.vercel.app/create-payment-intent', { price: amount })
+      .then(res => setClientSecret(res.data.client_secret))
+      .catch(err => setError('Payment initialization failed'));
+  }, [amount]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setProcessing(true);
-
-    if (!stripe || !elements) {
+    
+    if (!stripe || !elements || !clientSecret) {
       return;
     }
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardElement),
-    });
+    setProcessing(true);
+    setError(null);
 
-    if (error) {
-      setError(error.message);
+    const cardElement = elements.getElement(CardElement);
+
+    try {
+      const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: user?.email, 
+          },
+        } 
+      });
+
+      axios.post('https://assignment-12-blue.vercel.app/payments', { 
+        transactionId: paymentIntent.id,
+        user: user?.email, 
+        amount, 
+        cartItems: cart, // Assuming you have cart state/context
+        date: new Date().toISOString(),
+        status: paymentIntent.status
+      })
+
+     
+     
+
+      if (error) {
+        setError(error.message);
+        setProcessing(false);
+      } else if (paymentIntent.status === 'succeeded') {
+        onSuccess(paymentIntent);
+        setCart([])
+        const invoice = {
+          transactionId: paymentIntent.id,
+          invoiceDate: new Date().toISOString(),
+          dueDate: new Date().toISOString(),
+          items: cart,
+          // subtotal: amount  - (amount * 0.1),
+          // tax: amount * 0.1,
+          total: amount,
+          user: user?.email
+        }
+        setInvoice(invoice)
+      }
+    } catch (err) {
+      setError('Payment processing failed');
+    } finally {
       setProcessing(false);
-    } else {
-      // Here you would typically send the paymentMethod.id to your server
-      // to create a charge or save the payment method for later use
-      console.log('Payment successful:', paymentMethod);
-      setProcessing(false);
-      onSuccess();
     }
   };
 
@@ -43,16 +87,26 @@ const CheckoutForm = ({ grandTotal, onSuccess }) => {
           Credit or debit card
         </label>
         <div className="border rounded-md p-3">
-          <CardElement id="card-element" />
+          <CardElement 
+            id="card-element" 
+            options={{
+              style: {
+                base: {
+                  fontSize: '16px',
+                  color: '#424770',
+                },
+              },
+            }}
+          />
         </div>
       </div>
       <div className="mb-4">
-        <p className="text-xl font-bold">Grand Total: ${grandTotal.toFixed(2)}</p>
+        <p className="text-xl font-bold">Grand Total: ${amount.toFixed(2)}</p>
       </div>
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <button
         type="submit"
-        disabled={!stripe || processing}
+        disabled={!stripe || processing || !clientSecret}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full disabled:opacity-50"
       >
         {processing ? 'Processing...' : 'Pay Now'}
@@ -63,19 +117,21 @@ const CheckoutForm = ({ grandTotal, onSuccess }) => {
 
 const CheckoutPage = () => {
   const [paymentComplete, setPaymentComplete] = useState(false);
-  const grandTotal = 99.99; // Replace with actual grand total from your cart or state
+  const [paymentDetails, setPaymentDetails] = useState(null);
+  const { amount } = useContext(AuthContext);
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = (paymentIntent) => {
+    setPaymentDetails(paymentIntent);
     setPaymentComplete(true);
-    // Here you would typically redirect to an invoice page
-    // For this example, we'll just show a success message
   };
 
   if (paymentComplete) {
     return (
       <div className="max-w-md mx-auto mt-8 text-center">
         <h2 className="text-2xl font-bold mb-4">Payment Successful!</h2>
-        <p>Thank you for your purchase. You will be redirected to your invoice shortly.</p>
+        <p>Transaction ID: {paymentDetails.id}</p>
+        <p>Thank you for your purchase.</p>
+        <Link to='/invoice'><button className='btn m-4'>View invoice</button></Link>
       </div>
     );
   }
@@ -84,7 +140,7 @@ const CheckoutPage = () => {
     <div className="container mx-auto px-4">
       <h1 className="text-3xl font-bold text-center my-8">Checkout</h1>
       <Elements stripe={stripePromise}>
-        <CheckoutForm grandTotal={grandTotal} onSuccess={handlePaymentSuccess} />
+        <CheckoutForm onSuccess={handlePaymentSuccess} />
       </Elements>
     </div>
   );

@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const ManageBanner = () => {
   const [advertisements, setAdvertisements] = useState([]);
+  const [activeAds, setActiveAds] = useState([]);
 
   useEffect(() => {
     axios
@@ -15,10 +16,28 @@ const ManageBanner = () => {
 
   const handleToggleActive = (id) => {
     setAdvertisements((ads) =>
-      ads.map((ad) =>
-        ad._id === id ? { ...ad, activeStatus: !ad.activeStatus } : ad
-      )
+      ads.map((ad) => {
+        if (ad._id === id) {
+          const newStatus = !ad.activeStatus;
+          // Update the activeAds array based on the new activeStatus
+          if (newStatus) {
+            setActiveAds((prev) => [...prev, ad._id]); // Add to activeAds
+          } else {
+            setActiveAds((prev) => prev.filter((adId) => adId !== ad._id)); // Remove from activeAds
+          }
+          return { ...ad, activeStatus: newStatus };
+        }
+        return ad;
+      })
     );
+  };
+
+  const handleSave = () => {
+    // Send a PATCH request to update the active status of the selected ads
+    axios
+      .patch('https://assignment-12-blue.vercel.app/update-active-banners', { activeAds })
+      .then((res) => console.log('Active ads updated:', res))
+      .catch((err) => console.error('Error updating active ads:', err));
   };
 
   return (
@@ -26,6 +45,14 @@ const ManageBanner = () => {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Manage Banner Advertisements</h1>
         <p className="text-gray-600">Control which banners appear in the homepage slider</p>
+        <div className="flex justify-end w-full">
+          <button
+            onClick={handleSave}
+            className="p-4 bg-green-500 text-white rounded-xl w-[100px]"
+          >
+            Save
+          </button>
+        </div>
       </div>
 
       {/* Active Banners Preview */}
