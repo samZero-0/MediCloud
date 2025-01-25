@@ -1,19 +1,21 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const CategoryCard = ({ category }) => (
-  <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105">
-    <img
-      src={category.image || "/placeholder.svg"}
-      alt={category.category}
-      className="w-full h-48 object-cover"
-    />
-    <div className="p-4">
-      <h3 className="text-xl font-semibold mb-2">{category.category}</h3>
-      <p className="text-gray-600">{category.count} medicines</p>
-    </div>
+  <Link to={`categories/${category.category}`}> 
+  <div  className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105">
+  <img
+    src={category.image || "/placeholder.svg"}
+    alt={category.category}
+    className="w-full h-48 object-cover"
+  />
+  <div className="p-4">
+    <h3 className="text-xl font-semibold mb-2">{category.category}</h3>
+    <p className="text-gray-600">{category.count} medicines</p>
   </div>
-);
+</div>
+</Link>);
 
 const CategoryCardSection = () => {
   const [categories, setCategories] = useState([]); 

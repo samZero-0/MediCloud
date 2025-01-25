@@ -9,7 +9,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
 import ShopPage from "../pages/Shop";
-import CategoryDetails from "../pages/ProductDetails";
+
 import Cart from "../pages/Cart";
 import CheckoutPage from "../pages/Checkout";
 import InvoicePage from "../pages/Invoice";
@@ -17,6 +17,8 @@ import Dashboard from "../pages/Admin/Dashboard";
 import SellerDashboard from "../pages/Seller/Dashboard";
 import ManageBanner from "../pages/Admin/ManageBanner";
 import PaymentHistory from "../pages/User/UserDashboard";
+import CategoryDetails from "../pages/CategoryDetails";
+import MedicineCategoryPage from "../pages/CategoryDetails";
 // import Login from "../pages/Login";
 // import Register from "../pages/Register";
 // import NotFound from "../pages/404Page"
@@ -85,6 +87,11 @@ import PaymentHistory from "../pages/User/UserDashboard";
         {
           path: '/userDashboard',
           element: <PaymentHistory></PaymentHistory>
+        },
+        {
+          path: '/categories/:category',
+          loader: ({params}) => fetch(`https://assignment-12-blue.vercel.app/allMedicines/${params.category}`),
+          element: <MedicineCategoryPage></MedicineCategoryPage>
         },
         
 
