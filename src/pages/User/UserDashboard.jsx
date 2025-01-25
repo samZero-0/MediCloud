@@ -1,18 +1,21 @@
-import  { useState, useEffect } from 'react';
+import  { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../../providers/AuthProvider';
 
 const PaymentHistory = () => {
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
+    const {user} = useContext(AuthContext);
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
         setIsLoading(true);
-        // Replace with your actual API endpoint
-        const response = await axios.get('/api/transactions');
-        setTransactions(response.data);
+        const response = await axios.get('https://assignment-12-blue.vercel.app/payments');
+        const userTransactions = response.data.filter(
+            (transaction) => transaction.user === user.email
+          );
+        setTransactions(userTransactions);
         setIsLoading(false);
       } catch (err) {
         setError('Failed to fetch transactions');
