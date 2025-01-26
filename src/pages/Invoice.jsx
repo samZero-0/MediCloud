@@ -73,9 +73,9 @@ const InvoicePage = () => {
                 <tr key={index} className="border-b">
                   <td className="py-2 px-4">{item.medicineName}</td>
                   <td className="text-right py-2 px-4">{item.quantity || 1}</td>
-                  <td className="text-right py-2 px-4">${item.price?.toFixed(2)}</td>
+                  <td className="text-right py-2 px-4">${item.price}</td>
                   <td className="text-right py-2 px-4">
-                    ${(item.quantity * item.price || item.price)?.toFixed(2)}
+                    ${(item.quantity * item.price || item.price)}
                   </td>
                 </tr>
               ))}
@@ -87,7 +87,7 @@ const InvoicePage = () => {
             <div className="text-right">
               <div className="flex justify-between w-64 text-xl font-bold mt-2">
                 <p>Total:</p>
-                <p>${invoice?.total?.toFixed(2) || "0.00"}</p>
+                <p>${invoice?.total || "0.00"}</p>
               </div>
             </div>
           </div>

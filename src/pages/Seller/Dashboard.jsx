@@ -1,14 +1,57 @@
-import  { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import AskForAdvertisement from './Advertisement';
 import PaymentHistory from './PaymentHistory';
+import ManageMedicines from './ManageMedicine';
+import { AuthContext } from '../../providers/AuthProvider';
 
 const SellerDashboard = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const [transactions, setTransactions] = useState([]);
+  const [totalSalesRevenue, setTotalSalesRevenue] = useState(0);
+  const [paidTotal, setPaidTotal] = useState(0);
+  const {user} = useContext(AuthContext);
+  const [pendingTotal, setPendingTotal] = useState(0);
 
-  // Dummy data for demonstration
-  const totalSalesRevenue = 12000;
-  const paidTotal = 8000;
-  const pendingTotal = 4000;
+  // Fetch transactions from the API
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const response = await axios.get('https://assignment-12-blue.vercel.app/payments'); // Replace with your API endpoint
+        setTransactions(response.data);
+
+        // Calculate totals
+        let totalRevenue = 0;
+        let paid = 0;
+        let pending = 0;
+
+        response.data.forEach((transaction) => {
+          // Check if any cart item belongs to the logged-in seller
+          const sellerTransactions = transaction.cartItems.filter(
+            (item) => item.sellerName === user.email
+          );
+
+          if (sellerTransactions.length > 0) {
+            totalRevenue += transaction.amount;
+
+            if (transaction.status === 'succeeded') {
+              paid += transaction.amount;
+            } else {
+              pending += transaction.amount;
+            }
+          }
+        });
+
+        setTotalSalesRevenue(totalRevenue);
+        setPaidTotal(paid);
+        setPendingTotal(pending);
+      } catch (error) {
+        console.error('Error fetching transactions:', error);
+      }
+    };
+
+    fetchTransactions();
+  }, [user.email]);
 
   const renderContent = () => {
     if (activeSection === 'home') {
@@ -18,15 +61,15 @@ const SellerDashboard = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold">Total Sales Revenue</h3>
-              <p className="text-2xl font-bold">${totalSalesRevenue}</p>
+              <p className="text-2xl font-bold">${totalSalesRevenue.toFixed(2)}</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold">Paid Total</h3>
-              <p className="text-2xl font-bold text-green-600">${paidTotal}</p>
+              <p className="text-2xl font-bold text-green-600">${paidTotal.toFixed(2)}</p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold">Pending Total</h3>
-              <p className="text-2xl font-bold text-red-600">${pendingTotal}</p>
+              <p className="text-2xl font-bold text-red-600">${pendingTotal.toFixed(2)}</p>
             </div>
           </div>
         </div>
@@ -35,21 +78,21 @@ const SellerDashboard = () => {
       return (
         <div className="p-6">
           <h2 className="text-2xl font-bold mb-4">Manage Medicine</h2>
-          <p>Here you can manage your medicines.</p>
+          <ManageMedicines userEmail={user.email} />
         </div>
       );
     } else if (activeSection === 'paymentHistory') {
       return (
         <div className="p-6">
           <h2 className="text-2xl font-bold mb-4">Payment History</h2>
-          <PaymentHistory></PaymentHistory>
+          <PaymentHistory userEmail={user.email} />
         </div>
       );
     } else if (activeSection === 'askForAdvertisement') {
       return (
         <div className="p-6">
-          <h2 className="text-2xl font-bold mb-4"></h2>
-          <AskForAdvertisement></AskForAdvertisement>
+          <h2 className="text-2xl font-bold mb-4">Ask for Advertisement</h2>
+          <AskForAdvertisement />
         </div>
       );
     }

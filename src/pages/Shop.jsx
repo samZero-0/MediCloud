@@ -45,7 +45,7 @@ const ShopPage = () => {
           {medicines.map((medicine) => (
             <tr key={medicine.id}>
               <td className="border border-gray-300 p-2">{medicine.medicineName}</td>
-              <td className="border border-gray-300 p-2">${medicine.price.toFixed(2)}</td>
+              <td className="border border-gray-300 p-2">${medicine.price}</td>
               <td className="border border-gray-300 p-2">
                 <button
                   onClick={() => openModal(medicine)}
@@ -74,7 +74,7 @@ const ShopPage = () => {
               alt={selectedMedicine.name}
               className="w-full h-60 object-cover mb-2"
             />
-            <p className="mb-2">Price: ${selectedMedicine.price.toFixed(2)}</p>
+            <p className="mb-2">Price: ${selectedMedicine.price}</p>
             <p className="mb-4">{selectedMedicine.description}</p>
             <button
               onClick={closeModal}
@@ -93,7 +93,7 @@ const ShopPage = () => {
         ) : (
           <ul>
             {cart.map((item, index) => (
-              <li key={index}>{item.medicineName} - ${item.price.toFixed(2)}</li>
+              <li key={index}>{item.medicineName} - ${item.price}</li>
             ))}
           </ul>
         )}

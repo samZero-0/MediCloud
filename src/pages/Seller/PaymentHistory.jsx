@@ -39,7 +39,7 @@ const PaymentHistory = () => {
               </p>
             </div>
             <p className="text-gray-600">User: {transaction.user}</p>
-            <p className="text-gray-600">Amount: ${transaction.amount.toFixed(2)}</p>
+            <p className="text-gray-600">Amount: ${transaction.amount}</p>
 
             {/* Sold Medicines */}
             <div className="mt-4">
@@ -56,7 +56,7 @@ const PaymentHistory = () => {
                       />
                       <div>
                         <p className="text-lg font-semibold">{item.medicineName}</p>
-                        <p className="text-gray-600">Price: ${item.price.toFixed(2)}</p>
+                        <p className="text-gray-600">Price: ${item.price}</p>
                         <p className="text-gray-600">Category: {item.category}</p>
                       </div>
                     </div>

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-
-const ManageMedicines = ({ userEmail }) => {
+import { AuthContext } from '../../providers/AuthProvider'
+import { toast } from 'react-toastify';
+const ManageMedicines = () => {
   const [medicines, setMedicines] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const {user} = useContext(AuthContext);
   const [newMedicine, setNewMedicine] = useState({
     image: '',
     category: '',
@@ -12,29 +14,26 @@ const ManageMedicines = ({ userEmail }) => {
     symptoms: [],
     dosage: '',
     discountStatus: false,
+    sellerName: user?.email, // Pre-fill sellerName with logged-in user's email
     manufactureName: '',
     expireDate: '',
-    itemGenericName: '',
-    shortDescription: '',
-    itemMassUnit: 'Mg',
-    perUnitPrice: 0,
-    discountPercentage: 0,
+    createDate: new Date().toISOString().split('T')[0], // Set createDate to current date
   });
 
   // Fetch medicines from the API
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
-        const response = await axios.get('/api/medicines'); // Replace with your API endpoint
+        const response = await axios.get('https://assignment-12-blue.vercel.app/allMedicines'); // Replace with your API endpoint
         // Filter medicines where sellerName matches the logged-in user's email
-        const filteredMedicines = response.data.filter((medicine) => medicine.sellerName === userEmail);
+        const filteredMedicines = response.data.filter((medicine) => medicine.sellerName === user?.email);
         setMedicines(filteredMedicines);
       } catch (error) {
         console.error('Error fetching medicines:', error);
       }
     };
     fetchMedicines();
-  }, [userEmail]);
+  }, [user?.email]);
 
   // Handle input change for the modal form
   const handleInputChange = (e) => {
@@ -42,16 +41,19 @@ const ManageMedicines = ({ userEmail }) => {
     setNewMedicine({ ...newMedicine, [name]: value });
   };
 
+  // Handle symptoms input (comma-separated)
+  const handleSymptomsChange = (e) => {
+    const symptomsArray = e.target.value.split(',').map((symptom) => symptom.trim());
+    setNewMedicine({ ...newMedicine, symptoms: symptomsArray });
+  };
+
   // Handle form submission for adding a new medicine
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const medicineData = {
-        ...newMedicine,
-        sellerName: userEmail, // Add the logged-in user's email as sellerName
-      };
-      const response = await axios.post('/api/medicines', medicineData); // Replace with your API endpoint
+      const response = await axios.post('https://assignment-12-blue.vercel.app/allMedicines', newMedicine); 
       setMedicines([...medicines, response.data]);
+      toast.success('Medicine added successfully!');
       setIsModalOpen(false);
       setNewMedicine({
         image: '',
@@ -61,13 +63,10 @@ const ManageMedicines = ({ userEmail }) => {
         symptoms: [],
         dosage: '',
         discountStatus: false,
+        sellerName: user?.email,
         manufactureName: '',
         expireDate: '',
-        itemGenericName: '',
-        shortDescription: '',
-        itemMassUnit: 'Mg',
-        perUnitPrice: 0,
-        discountPercentage: 0,
+        createDate: new Date().toISOString().split('T')[0],
       });
     } catch (error) {
       console.error('Error adding medicine:', error);
@@ -106,10 +105,10 @@ const ManageMedicines = ({ userEmail }) => {
                 </td>
                 <td className="px-4 py-2 border-b">{medicine.medicineName}</td>
                 <td className="px-4 py-2 border-b">{medicine.category}</td>
-                <td className="px-4 py-2 border-b">${medicine.price.toFixed(2)}</td>
+                <td className="px-4 py-2 border-b">${medicine.price}</td>
                 <td className="px-4 py-2 border-b">{medicine.dosage}</td>
                 <td className="px-4 py-2 border-b">
-                  {medicine.discountStatus ? `${medicine.discountPercentage}%` : 'No Discount'}
+                  {medicine.discountStatus ? 'Yes' : 'No'}
                 </td>
                 <td className="px-4 py-2 border-b">{new Date(medicine.expireDate).toLocaleDateString()}</td>
               </tr>
@@ -121,125 +120,118 @@ const ManageMedicines = ({ userEmail }) => {
       {/* Modal for Adding Medicine */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg w-96">
+          <div className="bg-white p-6 rounded-lg w-1/2"> {/* Wider modal */}
             <h3 className="text-xl font-bold mb-4">Add Medicine</h3>
             <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Medicine Name</label>
-                <input
-                  type="text"
-                  name="medicineName"
-                  value={newMedicine.medicineName}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                  required
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Medicine Name</label>
+                  <input
+                    type="text"
+                    name="medicineName"
+                    value={newMedicine.medicineName}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Category</label>
+                  <select
+                    name="category"
+                    value={newMedicine.category}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                    required
+                  >
+                    <option value="">Select Category</option>
+                    <option value="Pain Relief">Pain Relief</option>
+                    <option value="Thyroid Medication">Thyroid Medication</option>
+                    <option value="Antibiotics">Antibiotics</option>
+                    <option value="Vitamins">Vitamins</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Image URL</label>
+                  <input
+                    type="text"
+                    name="image"
+                    value={newMedicine.image}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Price</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={newMedicine.price}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Symptoms (comma-separated)</label>
+                  <input
+                    type="text"
+                    name="symptoms"
+                    value={newMedicine.symptoms.join(', ')}
+                    onChange={handleSymptomsChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Dosage</label>
+                  <input
+                    type="text"
+                    name="dosage"
+                    value={newMedicine.dosage}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Manufacturer</label>
+                  <input
+                    type="text"
+                    name="manufactureName"
+                    value={newMedicine.manufactureName}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Expire Date</label>
+                  <input
+                    type="date"
+                    name="expireDate"
+                    value={newMedicine.expireDate}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Discount Status</label>
+                  <select
+                    name="discountStatus"
+                    value={newMedicine.discountStatus}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                    required
+                  >
+                    <option value={false}>No Discount</option>
+                    <option value={true}>Discount Available</option>
+                  </select>
+                </div>
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Generic Name</label>
-                <input
-                  type="text"
-                  name="itemGenericName"
-                  value={newMedicine.itemGenericName}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Short Description</label>
-                <textarea
-                  name="shortDescription"
-                  value={newMedicine.shortDescription}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Image URL</label>
-                <input
-                  type="text"
-                  name="image"
-                  value={newMedicine.image}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Category</label>
-                <select
-                  name="category"
-                  value={newMedicine.category}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                  required
-                >
-                  <option value="">Select Category</option>
-                  <option value="Pain Relief">Pain Relief</option>
-                  <option value="Thyroid Medication">Thyroid Medication</option>
-                  <option value="Antibiotics">Antibiotics</option>
-                  <option value="Vitamins">Vitamins</option>
-                </select>
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Manufacturer</label>
-                <input
-                  type="text"
-                  name="manufactureName"
-                  value={newMedicine.manufactureName}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Item Mass Unit</label>
-                <select
-                  name="itemMassUnit"
-                  value={newMedicine.itemMassUnit}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                  required
-                >
-                  <option value="Mg">Mg</option>
-                  <option value="Ml">Ml</option>
-                </select>
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Per Unit Price</label>
-                <input
-                  type="number"
-                  name="perUnitPrice"
-                  value={newMedicine.perUnitPrice}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Discount Percentage</label>
-                <input
-                  type="number"
-                  name="discountPercentage"
-                  value={newMedicine.discountPercentage}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Expire Date</label>
-                <input
-                  type="date"
-                  name="expireDate"
-                  value={newMedicine.expireDate}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                  required
-                />
-              </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end mt-4">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
