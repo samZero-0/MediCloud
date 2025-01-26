@@ -13,12 +13,14 @@ import ShopPage from "../pages/Shop";
 import Cart from "../pages/Cart";
 import CheckoutPage from "../pages/Checkout";
 import InvoicePage from "../pages/Invoice";
-import Dashboard from "../pages/Admin/Dashboard";
+// import Dashboard from "../pages/Admin/Dashboard";
 import SellerDashboard from "../pages/Seller/Dashboard";
 import ManageBanner from "../pages/Admin/ManageBanner";
 import PaymentHistory from "../pages/User/UserDashboard";
 import CategoryDetails from "../pages/CategoryDetails";
 import MedicineCategoryPage from "../pages/CategoryDetails";
+import AdminDashboard from "../pages/Admin/Homepage";
+import ManageUsers from "../pages/Admin/ManageUsers";
 // import Login from "../pages/Login";
 // import Register from "../pages/Register";
 // import NotFound from "../pages/404Page"
@@ -73,8 +75,12 @@ import MedicineCategoryPage from "../pages/CategoryDetails";
           element: <InvoicePage></InvoicePage>
         },
         {
-          path: '/dashboard',
-          element: <Dashboard></Dashboard>
+          path: '/adminDashboard',
+          element: <AdminDashboard></AdminDashboard>
+        },
+        {
+          path: '/manageUser',
+          element: <ManageUsers></ManageUsers>
         },
         {
           path: '/seller',
