@@ -1,37 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Download, Calendar, Filter, ArrowDown } from 'lucide-react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 const SalesReport = () => {
-  const [sales] = useState([
-    {
-      id: 1,
-      medicine: 'Amoxicillin',
-      seller: 'seller1@example.com',
-      buyer: 'buyer1@example.com',
-      quantity: 2,
-      price: 29.99,
-      date: '2024-03-01'
-    },
-    {
-      id: 2,
-      medicine: 'Paracetamol',
-      seller: 'seller2@example.com',
-      buyer: 'buyer2@example.com',
-      quantity: 3,
-      price: 15.99,
-      date: '2024-03-02'
-    },
-    {
-      id: 3,
-      medicine: 'Ibuprofen',
-      seller: 'seller3@example.com',
-      buyer: 'buyer3@example.com',
-      quantity: 1,
-      price: 24.99,
-      date: '2024-03-03'
-    }
-  ]);
+  const [sales, setSales] = useState([]);
+  const [totalSales, setTotalSales] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [averageOrderValue, setAverageOrderValue] = useState(0);
+
+  useEffect(() => {
+    axios.get('https://assignment-12-blue.vercel.app/payments').then((res) => {
+      setSales(res.data);
+
+      // Calculate metrics
+      const totalSalesAmount = res.data.reduce((sum, payment) => sum + payment.amount, 0);
+      const totalOrdersCount = res.data.length;
+      const averageOrderValue = totalSalesAmount / totalOrdersCount;
+
+      setTotalSales(totalSalesAmount);
+      setTotalOrders(totalOrdersCount);
+      setAverageOrderValue(averageOrderValue);
+    });
+  }, []);
 
   const [dateRange, setDateRange] = useState({ start: '', end: '' });
 
@@ -109,20 +100,20 @@ const SalesReport = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-xl shadow-sm p-6">
           <h3 className="text-sm font-medium text-gray-600 mb-2">Total Sales</h3>
-          <p className="text-2xl font-bold text-gray-900">$169.94</p>
+          <p className="text-2xl font-bold text-gray-900">${totalSales.toFixed(2)}</p>
           <p className="text-sm text-green-600 mt-2">↑ 12% vs last month</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-6">
           <h3 className="text-sm font-medium text-gray-600 mb-2">Total Orders</h3>
-          <p className="text-2xl font-bold text-gray-900">6</p>
+          <p className="text-2xl font-bold text-gray-900">{totalOrders}</p>
           <p className="text-sm text-green-600 mt-2">↑ 8% vs last month</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-6">
           <h3 className="text-sm font-medium text-gray-600 mb-2">Average Order Value</h3>
-          <p className="text-2xl font-bold text-gray-900">$28.32</p>
+          <p className="text-2xl font-bold text-gray-900">${averageOrderValue.toFixed(2)}</p>
           <p className="text-sm text-red-600 mt-2">↓ 3% vs last month</p>
         </div>
-       </div>
+      </div>
 
       {/* Sales Table */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -151,34 +142,37 @@ const SalesReport = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {sales.map((sale, index) => (
-                <motion.tr
-                  key={sale.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="hover:bg-gray-50"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {sale.medicine}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {sale.seller}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {sale.buyer}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {sale.quantity}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${sale.price}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {sale.date}
-                  </td>
-                </motion.tr>
-              ))}
+              {sales.map((sale) =>
+                sale.cartItems.map((item, index) => (
+                  <motion.tr
+                    key={`${sale._id}-${index}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="hover:bg-gray-50"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {item.medicineName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {item.sellerName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {sale.user}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {/* Assuming quantity is 1 for each item */}
+                      1
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      ${item.price}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(sale.date).toLocaleDateString()}
+                    </td>
+                  </motion.tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
