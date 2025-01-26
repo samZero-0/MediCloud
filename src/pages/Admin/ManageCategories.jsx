@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ManageCategories = () => {
@@ -7,28 +7,40 @@ const ManageCategories = () => {
   const [newCategory, setNewCategory] = useState({ categoryName: '', categoryImage: '' });
   const [editingCategory, setEditingCategory] = useState(null);
 
-  // Fetch categories from the backend
+  // Fetch categories on component mount
   useEffect(() => {
-    axios.get('https://assignment-12-blue.vercel.app/categories')
+    fetchCategories();
   }, []);
 
+  // Fetch categories from the backend
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('/categories');
+      const response = await axios.get('https://assignment-12-blue.vercel.app/allCategories');
       setCategories(response.data);
     } catch (error) {
       console.error('Failed to fetch categories:', error);
     }
   };
 
-  // Handle adding a new category
-  const handleAddCategory = async (e) => {
+  // Handle form submission (both add and update)
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (editingCategory) {
+      // If editing, call handleUpdateCategory
+      await handleUpdateCategory(editingCategory._id, newCategory);
+    } else {
+      // If adding, call handleAddCategory
+      await handleAddCategory();
+    }
+  };
+
+  // Handle adding a new category
+  const handleAddCategory = async () => {
     try {
-      await axios.post('/categories', newCategory);
+      await axios.post('https://assignment-12-blue.vercel.app/categories', newCategory);
       setIsModalOpen(false);
       setNewCategory({ categoryName: '', categoryImage: '' });
-      fetchCategories(); // Refresh the list
+      fetchCategories(); 
     } catch (error) {
       console.error('Failed to add category:', error);
     }
@@ -37,8 +49,10 @@ const ManageCategories = () => {
   // Handle updating a category
   const handleUpdateCategory = async (id, updatedData) => {
     try {
-      await axios.patch(`/categories/${id}`, updatedData);
-      fetchCategories(); // Refresh the list
+      await axios.patch(`https://assignment-12-blue.vercel.app/categories/${id}`, updatedData);
+      setIsModalOpen(false);
+      setNewCategory({ categoryName: '', categoryImage: '' });
+      fetchCategories(); 
     } catch (error) {
       console.error('Failed to update category:', error);
     }
@@ -47,7 +61,7 @@ const ManageCategories = () => {
   // Handle deleting a category
   const handleDeleteCategory = async (id) => {
     try {
-      await axios.delete(`/categories/${id}`);
+      await axios.delete(`https://assignment-12-blue.vercel.app/categories/${id}`);
       fetchCategories(); // Refresh the list
     } catch (error) {
       console.error('Failed to delete category:', error);
@@ -124,7 +138,7 @@ const ManageCategories = () => {
             <h2 className="text-xl font-bold mb-4">
               {editingCategory ? 'Edit Category' : 'Add Category'}
             </h2>
-            <form onSubmit={handleAddCategory}>
+            <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700">Category Name</label>
                 <input

@@ -23,7 +23,7 @@ const CategoryCardSection = () => {
   useEffect(() => {
    
     axios
-      .get("https://assignment-12-blue.vercel.app/categories")
+      .get("https://assignment-12-blue.vercel.app/allCategories")
       .then((res) => {
         setCategories(res.data);
       })
