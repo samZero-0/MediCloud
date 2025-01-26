@@ -1,30 +1,35 @@
-import { useEffect, useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
-import { motion } from 'framer-motion';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { motion } from "framer-motion";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ManageBanner = () => {
   const [advertisements, setAdvertisements] = useState([]);
   const [activeAds, setActiveAds] = useState([]);
 
+  // Fetch all banners on component mount
   useEffect(() => {
     axios
-      .get('https://assignment-12-blue.vercel.app/banners')
+      .get("https://assignment-12-blue.vercel.app/banners")
       .then((res) => setAdvertisements(res.data))
-      .catch((err) => console.error('Error fetching banners:', err));
+      .catch((err) => console.error("Error fetching banners:", err));
   }, []);
 
+  // Toggle active status of a banner
   const handleToggleActive = (id) => {
     setAdvertisements((ads) =>
       ads.map((ad) => {
         if (ad._id === id) {
           const newStatus = !ad.activeStatus;
           // Update the activeAds array based on the new activeStatus
-          if (newStatus) {
-            setActiveAds((prev) => [...prev, ad._id]); // Add to activeAds
-          } else {
-            setActiveAds((prev) => prev.filter((adId) => adId !== ad._id)); // Remove from activeAds
-          }
+          setActiveAds((prev) => {
+            if (newStatus) {
+              return [...prev, ad._id]; // Add to activeAds
+            } else {
+              return prev.filter((adId) => adId !== ad._id); // Remove from activeAds
+            }
+          });
           return { ...ad, activeStatus: newStatus };
         }
         return ad;
@@ -32,12 +37,21 @@ const ManageBanner = () => {
     );
   };
 
+
+
+  // Save the selected active banners
   const handleSave = () => {
-    // Send a PATCH request to update the active status of the selected ads
+    console.log("Active Ads:", activeAds); 
+
     axios
-      .patch('https://assignment-12-blue.vercel.app/update-active-banners', { activeAds })
-      .then((res) => console.log('Active ads updated:', res))
-      .catch((err) => console.error('Error updating active ads:', err));
+      .patch("https://assignment-12-blue.vercel.app/update-active-banners", { activeAds })
+      .then((res) => {
+        toast.success("Active ads updated successfully");
+      })
+      .catch((err) => {
+        console.error("Error updating active ads:", err.response?.data || err.message);
+        toast.error("Failed to update active ads");
+      });
   };
 
   return (
@@ -142,11 +156,11 @@ const ManageBanner = () => {
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-medium ${
                         ad.activeStatus
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-gray-100 text-gray-800'
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-800"
                       }`}
                     >
-                      {ad.activeStatus ? 'Active' : 'Inactive'}
+                      {ad.activeStatus ? "Active" : "Inactive"}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -154,8 +168,8 @@ const ManageBanner = () => {
                       onClick={() => handleToggleActive(ad._id)}
                       className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-colors ${
                         ad.activeStatus
-                          ? 'bg-red-100 text-red-600 hover:bg-red-200'
-                          : 'bg-green-100 text-green-600 hover:bg-green-200'
+                          ? "bg-red-100 text-red-600 hover:bg-red-200"
+                          : "bg-green-100 text-green-600 hover:bg-green-200"
                       }`}
                     >
                       {ad.activeStatus ? (
