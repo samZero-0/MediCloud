@@ -1,5 +1,7 @@
-import  { useState } from 'react';
+import  { useContext, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { AuthContext } from '../providers/AuthProvider';
 
 const MedicineCategoryPage = () => {
   const data =useLoaderData();
@@ -8,7 +10,8 @@ const MedicineCategoryPage = () => {
   const [medicines, setMedicines] = useState(data);
 
   const [selectedMedicine, setSelectedMedicine] = useState(null);
-  const [cart, setCart] = useState([]);
+  // const [cart, setCart] = useState([]);
+  const {cart, setCart} = useContext(AuthContext);
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleViewDetails = (medicine) => {
@@ -21,9 +24,9 @@ const MedicineCategoryPage = () => {
     const isInCart = cart.some(item => item._id === medicine._id);
     if (!isInCart) {
       setCart([...cart, medicine]);
-      alert(`${medicine.medicineName} added to cart!`);
+      toast.success(`${medicine.medicineName} added to cart!`);
     } else {
-      alert('Medicine already in cart');
+      toast.info('Medicine already in cart');
     }
   };
 
@@ -90,7 +93,7 @@ const MedicineCategoryPage = () => {
                 <p><strong>Category:</strong> {selectedMedicine.category}</p>
                 <p><strong>Manufacturer:</strong> {selectedMedicine.manufactureName}</p>
                 <p><strong>Seller:</strong> {selectedMedicine.sellerName}</p>
-                <p><strong>Price:</strong> ${selectedMedicine.price.toFixed(2)}</p>
+                <p><strong>Price:</strong> ${selectedMedicine.price}</p>
                 <p><strong>Dosage:</strong> {selectedMedicine.dosage}</p>
                 <p><strong>Symptoms:</strong> {selectedMedicine.symptoms.join(', ')}</p>
                 <p><strong>Create Date:</strong> {selectedMedicine.createDate}</p>

@@ -207,7 +207,7 @@ const CategoryDetails = () => {
                 <div className="border-t pt-4 mt-4">
                   <div className="flex justify-between items-center font-medium">
                     <span>Total Amount:</span>
-                    <span>${totalAmount.toFixed(2)}</span>
+                    <span>${totalAmount}</span>
                   </div>
                   <button className="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
                     Proceed to Checkout
