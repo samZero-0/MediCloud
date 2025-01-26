@@ -7,6 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import axios from "axios";
 
 const Register = () => {
   
@@ -42,33 +43,47 @@ const Register = () => {
     const password = e.target.password.value;
     const name = e.target.name.value;
     const photo = e.target.photo.value;
-
+  
     if (regex.test(password)) {
       createAccount(email, password)
         .then((result) => {
           const currentUser = result.user;
           setUser(currentUser);
+  
+          // Update the user's profile with the provided name and photo URL
           updateProfile(currentUser, { displayName: name, photoURL: photo })
-          
             .then(() => {
-              toast.success("Register Successful");
-              setTimeout(() => {
-                navigate("/");
-              }, 800);
-              
-              
+              // Prepare the user data to be sent to the backend
+              const userData = {
+                displayName: name,
+                photoURL: photo,
+                email: email,
+                role: "user",
+              };
+  
+              // Send the user data to the backend using Axios
+              axios.post('https://assignment-12-blue.vercel.app/users', userData)
+                .then((response) => {
+                  toast.success("Registration Successful");
+                  setTimeout(() => {
+                    navigate("/");
+                  }, 800);
+                })
+                .catch((err) => {
+                  // toast.error(`Failed to save user data: ${err.message}`);
+                });
             })
-            .catch(err => {
-              toast.error(`Registration Failed: ${err}`);
-            })
+            .catch((err) => {
+              toast.error(`Profile update failed: ${err.message}`);
+            });
         })
         .catch((error) => {
-          toast.error(`Registration Failed: ${error}`);
+          toast.error(`Registration Failed: ${error.message}`);
         });
     } else {
       setError('Password must have an uppercase letter, lowercase letter, and a length of at least 6 characters.');
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center  py-12">

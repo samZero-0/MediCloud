@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 const MySwal = withReactContent(Swal);
 
@@ -25,19 +26,42 @@ const Login = () => {
     setIsLoading(true);
     googleSignin()
       .then((res) => {
-        MySwal.fire({
-          title: "Welcome Back! 👋",
-          text: "Login successful",
-          icon: "success",
-          timer: 1000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          background: "#f8fafc",
-          iconColor: "#4f46e5",
-        });
-        setTimeout(() => {
-          navigate(location?.state ? location.state : "/");
-        }, 500);
+        const { displayName, photoURL, email } = res.user;
+  
+        // Prepare the user data to be sent to the backend
+        const userData = {
+          displayName,
+          photoURL,
+          email,
+          role: "user",
+        };
+  
+        // Send the user data to the backend using Axios
+        axios.post('https://assignment-12-blue.vercel.app/users', userData)
+          .then((response) => {
+            MySwal.fire({
+              title: "Welcome Back! 👋",
+              text: "Login successful",
+              icon: "success",
+              timer: 1000,
+              timerProgressBar: true,
+              showConfirmButton: false,
+              background: "#f8fafc",
+              iconColor: "#4f46e5",
+            });
+            setTimeout(() => {
+              navigate(location?.state ? location.state : "/");
+            }, 500);
+          })
+          .catch((err) => {
+            MySwal.fire({
+              title: "Oops!",
+              text: `Failed to save user data: ${err.message}`,
+              icon: "error",
+              background: "#f8fafc",
+              confirmButtonColor: "#4f46e5",
+            });
+          });
       })
       .catch((err) => {
         MySwal.fire({
@@ -50,7 +74,6 @@ const Login = () => {
       })
       .finally(() => setIsLoading(false));
   };
-
   const handleLogin = (e) => {
     e.preventDefault();
     setIsLoading(true);
