@@ -83,7 +83,7 @@ import ManageUsers from "../pages/Admin/ManageUsers";
           element: <ManageUsers></ManageUsers>
         },
         {
-          path: '/seller',
+          path: '/sellerDashboard',
           element: <SellerDashboard></SellerDashboard>
         },
         {

@@ -9,7 +9,7 @@ import { FaCartPlus } from "react-icons/fa";
 const Navbar = () => {
   const [hamburger, setHamburger] = useState(false);
   const { user, logOut } = useContext(AuthContext);
-  const { isDarkMode, toggleDarkMode } = useContext(AuthContext);
+  const { isDarkMode, toggleDarkMode, isAdmin, isUser, isSeller } = useContext(AuthContext);
   const [showLoginButton, setShowLoginButton] = useState(false);
 
   useEffect(() => {
@@ -19,6 +19,21 @@ const Navbar = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Determine the dashboard path based on the user's role
+  const getDashboardPath = () => {
+    if (isAdmin) {
+      return "/adminDashboard";
+    } else if (isSeller) {
+      return "/sellerDashboard";
+    } else if (isUser) {
+      return "/userDashboard";
+    } else {
+      return "/userDashboard"; 
+    }
+  };
+
+  console.log(isAdmin, isSeller, isUser);
 
   return (
     <section className="sticky top-0 z-50 backdrop-blur-lg bg-white/30 dark:bg-black/60">
@@ -33,11 +48,7 @@ const Navbar = () => {
               {hamburger ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
             </button>
             <Link to="/" className="btn btn-ghost text-xl hidden lg:block">
-              <img
-                src="/logo.png"
-                alt="Logo"
-                className="md:block w-[200px]"
-              />
+              <img src="/logo.png" alt="Logo" className="md:block w-[200px]" />
             </Link>
           </div>
 
@@ -50,32 +61,25 @@ const Navbar = () => {
               <li>
                 <Link to="/shop">Shop</Link>
               </li>
-              {/* <li>
-                <Link to="/gallery">Gallery</Link>
-              </li> */}
             </ul>
           </div>
 
           {/* Navbar End */}
           <div className="navbar-end flex items-center">
-           <Link to='/cart'>
-           <div className="px-11 " >
-              <FaCartPlus className="text-2xl "></FaCartPlus>
-            </div>
-           </Link>
-            <div className="px-5 ">
-              <select name="" id="" className="border rounded-xl  p-2">
-              <option value="">Select Language</option>
-              <option value="">English</option>
-              <option value="">Bangla</option>
+            <Link to="/cart">
+              <div className="px-11">
+                <FaCartPlus className="text-2xl"></FaCartPlus>
+              </div>
+            </Link>
+            <div className="px-5">
+              <select name="" id="" className="border rounded-xl p-2">
+                <option value="">Select Language</option>
+                <option value="">English</option>
+                <option value="">Bangla</option>
               </select>
             </div>
             <div className="md:mr-8 mr-3">
-              <DarkModeSwitch
-                checked={isDarkMode}
-                onChange={toggleDarkMode}
-                size={30}
-              />
+              <DarkModeSwitch checked={isDarkMode} onChange={toggleDarkMode} size={30} />
             </div>
             {user && user.email ? (
               <div className="dropdown dropdown-end">
@@ -89,12 +93,12 @@ const Navbar = () => {
                   className="menu dropdown-content bg-base-200 rounded-box z-[50] mt-2 w-52 p-2 shadow"
                 >
                   <li>
-                    <Link to="/myOrders">Update  profile</Link>
+                    <Link to="/myOrders">Update profile</Link>
                   </li>
                   <li>
-                    <Link to="/userDashboard">Dashboard</Link>
+                    {/* Dynamic Dashboard Link */}
+                    <Link to={getDashboardPath()}>Dashboard</Link>
                   </li>
-                
                   <li>
                     <button onClick={logOut}>Logout</button>
                   </li>
@@ -124,7 +128,6 @@ const Navbar = () => {
                   All Foods
                 </Link>
               </li>
-            
               <li>
                 <Link to="/login" onClick={() => setHamburger(false)}>
                   Join Us
