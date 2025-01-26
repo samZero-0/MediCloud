@@ -33,12 +33,12 @@ const Banner = () => {
         {banner.map((b) => (
           <SwiperSlide key={b._id}>
             <div
-              className="w-full h-full bg-cover bg-center flex items-center justify-center"
+              className="w-full h-full  bg-center bg-no-repeat flex items-center justify-center"
               style={{ backgroundImage: `url(${b.bannerImage})` }}
             >
               <div className='flex flex-col gap-3'>
-              <h2 className="text-4xl font-bold text-black text-center">{b.title}</h2>
-              <h3 className="text-4xl font-bold text-black text-center">{b.description}</h3>
+              {/* <h2 className="text-4xl font-bold text-black text-center">{b.title}</h2> */}
+              {/* <h3 className="text-4xl font-bold text-black text-center">{b.description}</h3> */}
               </div>
             </div>
           </SwiperSlide>

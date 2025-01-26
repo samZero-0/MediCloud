@@ -79,11 +79,11 @@ const MedicineCategoryPage = () => {
             >
               ✖️
             </button>
-            <div className="flex">
+            <div className="flex flex-col">
               <img 
                 src={selectedMedicine.image} 
                 alt={selectedMedicine.medicineName} 
-                className="w-1/3 h-auto object-cover mr-4 rounded"
+                className="w-full h-auto object-cover mr-4 rounded"
               />
               <div>
                 <h2 className="text-xl font-bold mb-2">{selectedMedicine.medicineName}</h2>

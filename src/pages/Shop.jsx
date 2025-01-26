@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../providers/AuthProvider';
+import { toast } from 'react-toastify';
 
 const ShopPage = () => {
   const { cart, setCart } = useContext(AuthContext); // Get cart and setCart from AuthContext
@@ -20,6 +21,7 @@ const ShopPage = () => {
 
   const addToCart = (medicine) => {
     setCart((prevCart) => [...prevCart, medicine]);
+    toast.success("Added to cart");
   };
 
   useEffect(() => {
@@ -65,12 +67,12 @@ const ShopPage = () => {
 
       {isModalOpen && selectedMedicine && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-lg max-w-md">
+          <div className="bg-white p-4 rounded-lg ">
             <h2 className="text-xl font-bold mb-2">{selectedMedicine.name}</h2>
             <img
               src={selectedMedicine.image || "/placeholder.svg"}
               alt={selectedMedicine.name}
-              className="w-full h-40 object-cover mb-2"
+              className="w-full h-60 object-cover mb-2"
             />
             <p className="mb-2">Price: ${selectedMedicine.price.toFixed(2)}</p>
             <p className="mb-4">{selectedMedicine.description}</p>
