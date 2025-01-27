@@ -29,7 +29,7 @@ const ManageMedicines = () => {
         const filteredMedicines = response.data.filter((medicine) => medicine.sellerName === user?.email);
         setMedicines(filteredMedicines);
       } catch (error) {
-        console.error('Error fetching medicines:', error);
+       error
       }
     };
     fetchMedicines();
@@ -69,7 +69,7 @@ const ManageMedicines = () => {
         createDate: new Date().toISOString().split('T')[0],
       });
     } catch (error) {
-      console.error('Error adding medicine:', error);
+      error
     }
   };
 

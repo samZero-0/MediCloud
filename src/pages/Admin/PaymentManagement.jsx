@@ -34,7 +34,7 @@ const PaymentManagement = () => {
         setPaidAmount(paid);
       })
       .catch((error) => {
-        console.error('Failed to fetch payments:', error);
+        
       });
   }, []);
 
@@ -65,7 +65,7 @@ const PaymentManagement = () => {
       setPendingAmount(pending);
       setPaidAmount(paid);
     } catch (error) {
-      console.error('Failed to accept payment:', error);
+      
     }
   };
 

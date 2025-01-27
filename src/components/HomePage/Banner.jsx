@@ -15,7 +15,7 @@ const Banner = () => {
     axios
       .get('https://assignment-12-blue.vercel.app/active-banners')
       .then((res) => setBanner(res.data))
-      .catch((err) => console.error('Error fetching banners:', err));
+      .catch((err) => err);
   }, []);
 
   return (

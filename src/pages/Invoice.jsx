@@ -12,7 +12,7 @@ const InvoicePage = () => {
   // Handle export to PDF
   const handleExportPDF = () => {
     if (!invoice) {
-      console.error("No invoice data available.");
+      
       return;
     }
 

@@ -33,7 +33,7 @@ const Navbar = () => {
     }
   };
 
-  console.log(isAdmin, isSeller, isUser);
+  /
 
   return (
     <section className="sticky top-0 z-50 backdrop-blur-lg bg-white/30 dark:bg-black/60">

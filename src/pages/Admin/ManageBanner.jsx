@@ -13,7 +13,7 @@ const ManageBanner = () => {
     axios
       .get("https://assignment-12-blue.vercel.app/banners")
       .then((res) => setAdvertisements(res.data))
-      .catch((err) => console.error("Error fetching banners:", err));
+      .catch((err) =>  err);
   }, []);
 
   // Toggle active status of a banner
@@ -41,7 +41,7 @@ const ManageBanner = () => {
 
   // Save the selected active banners
   const handleSave = () => {
-    console.log("Active Ads:", activeAds); 
+    
 
     axios
       .patch("https://assignment-12-blue.vercel.app/update-active-banners", { activeAds })
@@ -49,7 +49,7 @@ const ManageBanner = () => {
         toast.success("Active ads updated successfully");
       })
       .catch((err) => {
-        console.error("Error updating active ads:", err.response?.data || err.message);
+        
         toast.error("Failed to update active ads");
       });
   };

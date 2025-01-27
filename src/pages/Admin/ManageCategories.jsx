@@ -21,7 +21,7 @@ const ManageCategories = () => {
       const response = await axios.get("https://assignment-12-blue.vercel.app/allCategories");
       setCategories(response.data);
     } catch (error) {
-      console.error("Failed to fetch categories:", error);
+      /
       Swal.fire({
         title: "Error!",
         text: "Failed to fetch categories. Please try again.",
@@ -63,7 +63,7 @@ const ManageCategories = () => {
         confirmButtonText: "OK",
       });
     } catch (error) {
-      console.error("Failed to add category:", error);
+      
       Swal.fire({
         title: "Success!",
         text: "Category added successfully.",
@@ -89,7 +89,7 @@ const ManageCategories = () => {
         confirmButtonText: "OK",
       });
     } catch (error) {
-      console.error("Failed to update category:", error);
+     
       Swal.fire({
         title: "Error!",
         text: "Failed to update category. Please try again.",
@@ -124,7 +124,7 @@ const ManageCategories = () => {
             confirmButtonText: "OK",
           });
         } catch (error) {
-          console.error("Failed to delete category:", error);
+          
           Swal.fire({
             title: "Error!",
             text: "Failed to delete category. Please try again.",

@@ -28,7 +28,8 @@ const CategoryCardSection = () => {
         setCategories(res.data);
       })
       .catch((err) => {
-        console.error("Failed to fetch categories:", err);
+       
+        err
       });
   }, []); 
 

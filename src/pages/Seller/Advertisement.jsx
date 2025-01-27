@@ -25,7 +25,7 @@ const AskForAdvertisement = () => {
           setBanners(userBanners);
         // setBanners(response.data);
       } catch (error) {
-        console.error('Error fetching banners:', error);
+        
       }
     };
     fetchBanners();
@@ -46,7 +46,7 @@ const AskForAdvertisement = () => {
       setIsModalOpen(false);
       setNewBanner({ bannerImage: '', title: '', description: ''});
     } catch (error) {
-      console.error('Error adding banner:', error);
+      
     }
   };
 

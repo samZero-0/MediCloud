@@ -47,7 +47,7 @@ const SellerDashboard = () => {
         setPaidTotal(paid);
         setPendingTotal(pending);
       } catch (error) {
-        console.error('Error fetching transactions:', error);
+        error
       }
     };
 

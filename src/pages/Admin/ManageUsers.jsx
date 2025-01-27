@@ -22,7 +22,7 @@ const ManageUsers = () => {
         ));
       })
       .catch((error) => {
-        console.error('Failed to update user role:', error);
+        
         toast.success('User Role Updated');
       });
   };

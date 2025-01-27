@@ -16,7 +16,7 @@ const PaymentHistory = () => {
         );
         setTransactions(filteredTransactions);
       } catch (error) {
-        console.error('Error fetching transactions:', error);
+        error
       }
     };
     fetchTransactions();

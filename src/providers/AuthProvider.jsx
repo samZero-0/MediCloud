@@ -133,7 +133,7 @@ const AuthProvider = ({ children }) => {
                 }
             })
             .catch((error) => {
-                console.error("Error fetching users:", error);
+                error
             });
     }, [user]); // Add `user` as a dependency to re-run this effect when `user` changes
 
