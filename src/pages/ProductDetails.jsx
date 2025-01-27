@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Eye, ShoppingCart, X, Plus, Minus } from 'lucide-react';
+import { Helmet } from 'react-helmet';
 
 const CategoryDetails = () => {
   const [selectedMedicine, setSelectedMedicine] = useState(null);
@@ -86,6 +87,11 @@ const CategoryDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+        <Helmet>
+               
+               <title>Details</title>
+             
+           </Helmet>
       {/* Header */}
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">

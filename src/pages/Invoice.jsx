@@ -3,6 +3,7 @@ import { AuthContext } from "../providers/AuthProvider";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable"; // For table support in PDF
 import { Download } from "lucide-react"; // For the download icon
+import { Helmet } from "react-helmet";
 
 const InvoicePage = () => {
   const { invoice } = useContext(AuthContext);
@@ -55,6 +56,11 @@ const InvoicePage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8" ref={componentRef}>
+        <Helmet>
+               
+               <title>Invoice</title>
+             
+           </Helmet>
       <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="p-8">
           {/* Invoice Header */}

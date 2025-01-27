@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2"; // Import SweetAlert2
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 const Register = () => {
   useEffect(() => {
@@ -97,6 +98,11 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12">
+        <Helmet>
+               
+               <title>Register</title>
+             
+           </Helmet>
       <ToastContainer />
 
       <div className="bg-white dark:bg-transparent rounded-lg overflow-hidden md:flex w-4/5 lg:w-3/5">

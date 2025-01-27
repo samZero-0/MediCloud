@@ -7,6 +7,7 @@ import withReactContent from "sweetalert2-react-content";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 const MySwal = withReactContent(Swal);
 
@@ -111,11 +112,17 @@ const Login = () => {
   };
 
   return (
+    
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="min-h-screen bg-gradient-to-b from-indigo-50 to-white dark:from-gray-900 dark:to-gray-800 flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8"
     >
+        <Helmet>
+               
+               <title>Login</title>
+             
+           </Helmet>
       <div className="max-w-7xl w-full mx-auto md:flex gap-12 items-center">
         <motion.div 
           initial={{ opacity: 0, x: -50 }}

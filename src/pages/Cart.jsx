@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Trash2, Plus, Minus, ArrowRight, PackageOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { AuthContext } from '../providers/AuthProvider';
+import { Helmet } from 'react-helmet';
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -68,6 +69,11 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+        <Helmet>
+               
+               <title>Cart</title>
+             
+           </Helmet>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

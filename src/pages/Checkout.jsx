@@ -4,6 +4,7 @@ import { CardElement, Elements, useStripe, useElements } from '@stripe/react-str
 import { AuthContext } from '../providers/AuthProvider';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -138,6 +139,11 @@ const CheckoutPage = () => {
 
   return (
     <div className="container mx-auto px-4">
+        <Helmet>
+               
+               <title>Checkout</title>
+             
+           </Helmet>
       <h1 className="text-3xl font-bold text-center my-8">Checkout</h1>
       <Elements stripe={stripePromise}>
         <CheckoutForm onSuccess={handlePaymentSuccess} />

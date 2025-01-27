@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 const ShopPage = () => {
   const { cart, setCart } = useContext(AuthContext);
@@ -70,6 +71,11 @@ const ShopPage = () => {
 
   return (
     <div className="container mx-auto p-4">
+        <Helmet>
+               
+               <title>Shop</title>
+             
+           </Helmet>
       <h1 className="text-2xl font-bold mb-4">Medicine Shop</h1>
 
       {/* Search Bar */}

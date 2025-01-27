@@ -4,6 +4,7 @@ import AskForAdvertisement from './Advertisement';
 import PaymentHistory from './PaymentHistory';
 import ManageMedicines from './ManageMedicine';
 import { AuthContext } from '../../providers/AuthProvider';
+import { Helmet } from 'react-helmet';
 
 const SellerDashboard = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -100,6 +101,11 @@ const SellerDashboard = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
+        <Helmet>
+               
+               <title>Seller Dashboard</title>
+             
+           </Helmet>
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-lg">
         <div className="p-6">
