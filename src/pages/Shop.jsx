@@ -4,54 +4,47 @@ import { AuthContext } from "../providers/AuthProvider";
 import { toast } from "react-toastify";
 
 const ShopPage = () => {
-  const { cart, setCart } = useContext(AuthContext); // Get cart and setCart from AuthContext
+  const { cart, setCart } = useContext(AuthContext);
   const [selectedMedicine, setSelectedMedicine] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [medicines, setMedicines] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // Pagination
-  const [itemsPerPage, setItemsPerPage] = useState(5); // Items per page
-  const [sortOrder, setSortOrder] = useState("asc"); // Sorting by price
-  const [searchQuery, setSearchQuery] = useState(""); // Search functionality
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Fetch medicines on component mount
   useEffect(() => {
     axios
       .get("https://assignment-12-blue.vercel.app/allMedicines")
       .then((res) => setMedicines(res.data));
   }, []);
 
-  // Open modal for medicine details
   const openModal = (medicine) => {
     setSelectedMedicine(medicine);
     setIsModalOpen(true);
   };
 
-  // Close modal
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedMedicine(null);
   };
 
-  // Add medicine to cart
   const addToCart = (medicine) => {
     setCart((prevCart) => [...prevCart, medicine]);
     toast.success("Added to cart");
   };
 
-  // Handle search input change
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
-    setCurrentPage(1); // Reset to the first page when searching
+    setCurrentPage(1);
   };
 
-  // Filter medicines based on search query
   const filteredMedicines = medicines.filter((medicine) =>
     Object.values(medicine).some((value) =>
       String(value).toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 
-  // Sort medicines by price
   const sortedMedicines = filteredMedicines.sort((a, b) => {
     if (sortOrder === "asc") {
       return a.price - b.price;
@@ -60,21 +53,17 @@ const ShopPage = () => {
     }
   });
 
-  // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentMedicines = sortedMedicines.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Change items per page
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1); // Reset to the first page when changing items per page
+    setCurrentPage(1);
   };
 
-  // Toggle sort order
   const toggleSortOrder = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
@@ -115,7 +104,7 @@ const ShopPage = () => {
         </thead>
         <tbody>
           {currentMedicines.map((medicine) => (
-            <tr key={medicine.id}>
+            <tr key={medicine._id}>
               <td className="border border-gray-300 p-2">{medicine.medicineName}</td>
               <td className="border border-gray-300 p-2">${medicine.price}</td>
               <td className="border border-gray-300 p-2">
@@ -170,22 +159,106 @@ const ShopPage = () => {
 
       {/* Medicine Details Modal */}
       {isModalOpen && selectedMedicine && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-lg">
-            <h2 className="text-xl font-bold mb-2">{selectedMedicine.medicineName}</h2>
-            <img
-              src={selectedMedicine.image || "/placeholder.svg"}
-              alt={selectedMedicine.medicineName}
-              className="w-full h-60 object-cover mb-2"
-            />
-            <p className="mb-2">Price: ${selectedMedicine.price}</p>
-            <p className="mb-4">{selectedMedicine.description}</p>
-            <button
-              onClick={closeModal}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-            >
-              Close
-            </button>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white p-6 rounded-lg max-w-2xl w-full">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-2xl font-bold text-gray-800">{selectedMedicine.medicineName}</h2>
+              <button
+                onClick={closeModal}
+                className="text-gray-600 hover:text-gray-800 text-xl"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <img
+                  src={selectedMedicine.image || "/placeholder.svg"}
+                  alt={selectedMedicine.medicineName}
+                  className="w-full h-64 object-cover rounded-lg mb-4"
+                />
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-2xl font-bold text-blue-600 mb-2">
+                    ${selectedMedicine.price}
+                  </p>
+                  {selectedMedicine.discountStatus && (
+                    <span className="bg-green-100 text-green-800 text-sm font-medium px-2 py-1 rounded">
+                      Discount Available
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold text-gray-700">Category</h3>
+                  <p className="text-gray-600">{selectedMedicine.category}</p>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-gray-700">Symptoms</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedMedicine.symptoms?.map((symptom, index) => (
+                      <span 
+                        key={index}
+                        className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-sm"
+                      >
+                        {symptom}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-gray-700">Dosage</h3>
+                  <p className="text-gray-600">{selectedMedicine.dosage}</p>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-gray-700">Manufacturer</h3>
+                  <p className="text-gray-600">{selectedMedicine.manufactureName}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h3 className="font-semibold text-gray-700">Expiry Date</h3>
+                    <p className="text-gray-600">
+                      {new Date(selectedMedicine.expireDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-700">Created Date</h3>
+                    <p className="text-gray-600">
+                      {new Date(selectedMedicine.createDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-gray-700">Seller</h3>
+                  <p className="text-gray-600">{selectedMedicine.sellerName}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-4">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  addToCart(selectedMedicine);
+                  closeModal();
+                }}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -198,7 +271,7 @@ const ShopPage = () => {
         ) : (
           <ul>
             {cart.map((item, index) => (
-              <li key={index}>
+              <li key={index} className="mb-2">
                 {item.medicineName} - ${item.price}
               </li>
             ))}

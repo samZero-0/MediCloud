@@ -1,17 +1,17 @@
-import  { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../providers/AuthProvider';
 
 const MedicineCategoryPage = () => {
-  const data =useLoaderData();
-  const {category} = useParams();
-    console.log(data);
+  const data = useLoaderData();
+  const { category } = useParams();
   const [medicines, setMedicines] = useState(data);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState('none');
 
   const [selectedMedicine, setSelectedMedicine] = useState(null);
-  // const [cart, setCart] = useState([]);
-  const {cart, setCart} = useContext(AuthContext);
+  const { cart, setCart } = useContext(AuthContext);
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleViewDetails = (medicine) => {
@@ -20,7 +20,6 @@ const MedicineCategoryPage = () => {
   };
 
   const handleAddToCart = (medicine) => {
-    // Check if medicine is already in cart
     const isInCart = cart.some(item => item._id === medicine._id);
     if (!isInCart) {
       setCart([...cart, medicine]);
@@ -30,9 +29,53 @@ const MedicineCategoryPage = () => {
     }
   };
 
+  // Handle sorting
+  const handleSort = (order) => {
+    setSortOrder(order);
+    const sortedMedicines = [...medicines].sort((a, b) => {
+      if (order === 'asc') {
+        return a.price - b.price;
+      } else if (order === 'desc') {
+        return b.price - a.price;
+      }
+      return 0;
+    });
+    setMedicines(sortedMedicines);
+  };
+
+  // Filter medicines based on search term
+  const filteredMedicines = medicines.filter(medicine =>
+    medicine.medicineName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">{category}</h1>
+
+      {/* Search and Sort Controls */}
+      <div className="mb-4 flex flex-col sm:flex-row gap-4">
+        <div className="flex-1">
+          <input
+            type="text"
+            placeholder="Search by medicine name..."
+            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-gray-700">Sort by price:</span>
+          <select
+            className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={sortOrder}
+            onChange={(e) => handleSort(e.target.value)}
+          >
+            <option value="none">None</option>
+            <option value="asc">Low to High</option>
+            <option value="desc">High to Low</option>
+          </select>
+        </div>
+      </div>
       
       <table className="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
         <thead className="bg-gray-100">
@@ -45,7 +88,7 @@ const MedicineCategoryPage = () => {
           </tr>
         </thead>
         <tbody>
-          {medicines.map((medicine) => (
+          {filteredMedicines.map((medicine) => (
             <tr key={medicine._id} className="border-b hover:bg-gray-50">
               <td className="p-3">{medicine.medicineName}</td>
               <td className="p-3">{medicine.manufactureName}</td>
