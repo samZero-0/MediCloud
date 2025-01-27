@@ -33,7 +33,7 @@ const Navbar = () => {
     }
   };
 
-  /
+  
 
   return (
     <section className="sticky top-0 z-50 backdrop-blur-lg bg-white/30 dark:bg-black/60">

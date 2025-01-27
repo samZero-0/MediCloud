@@ -21,7 +21,7 @@ const ManageCategories = () => {
       const response = await axios.get("https://assignment-12-blue.vercel.app/allCategories");
       setCategories(response.data);
     } catch (error) {
-      /
+      
       Swal.fire({
         title: "Error!",
         text: "Failed to fetch categories. Please try again.",
