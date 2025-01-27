@@ -1,43 +1,55 @@
 import { updateProfile } from "firebase/auth";
 import { useContext, useEffect, useState } from "react";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
-import { Link, useNavigate, useLocation } from "react-router-dom"; // Added useLocation
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 
 const Register = () => {
   useEffect(() => {
-    // Scroll to the top when the component mounts
     window.scrollTo(0, 0);
   }, []);
 
   const { createAccount, setUser, googleSignin } = useContext(AuthContext);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current location
+  const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("user"); // Default role
 
-  // Function to handle Google login
   const handleGoogleLogin = () => {
     googleSignin()
       .then((res) => {
-        toast.success("Register Successful");
-        setTimeout(() => {
-          // Redirect to the previous location or home page
-          navigate(location?.state?.from || "/");
-        }, 800);
+        // Create user data with default role for Google sign-in
+        const userData = {
+          displayName: res.user.displayName,
+          photoURL: res.user.photoURL,
+          email: res.user.email,
+          role: "user", // Default role for Google sign-in
+        };
+
+        // Save user data to database
+        axios.post("https://assignment-12-blue.vercel.app/users", userData)
+          .then(() => {
+            toast.success("Register Successful");
+            setTimeout(() => {
+              navigate(location?.state?.from || "/");
+            }, 800);
+          })
+          .catch((err) => {
+            toast.error("Failed to save user data");
+          });
       })
       .catch((err) => {
         toast.error("Google login failed");
       });
   };
 
-  // Function to handle form submission
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -52,34 +64,29 @@ const Register = () => {
           const currentUser = result.user;
           setUser(currentUser);
 
-          // Update the user's profile with the provided name and photo URL
           updateProfile(currentUser, { displayName: name, photoURL: photo })
             .then(() => {
-              // Prepare the user data to be sent to the backend
               const userData = {
                 displayName: name,
                 photoURL: photo,
                 email: email,
-                role: "user",
+                role: selectedRole, // Use the selected role
               };
 
-              // Send the user data to the backend using Axios
               axios
                 .post("https://assignment-12-blue.vercel.app/users", userData)
                 .then((response) => {
-                  // Show SweetAlert success message
                   Swal.fire({
                     title: "Registration Successful!",
                     text: "You have been registered successfully.",
                     icon: "success",
                     confirmButtonText: "OK",
                   }).then(() => {
-                    // Redirect to the previous location or home page
                     navigate(location?.state?.from || "/");
                   });
                 })
                 .catch((err) => {
-                  // toast.error(`Failed to save user data: ${err.message}`);
+                  toast.error(`Failed to save user data: ${err.message}`);
                 });
             })
             .catch((err) => {
@@ -98,15 +105,12 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12">
-        <Helmet>
-               
-               <title>Register</title>
-             
-           </Helmet>
+      <Helmet>
+        <title>Register</title>
+      </Helmet>
       <ToastContainer />
 
       <div className="bg-white dark:bg-transparent rounded-lg overflow-hidden md:flex w-4/5 lg:w-3/5">
-        {/* Lottie Animation */}
         <div className="hidden md:flex md:w-1/2 items-center justify-center p-6">
           <DotLottieReact
             src="https://lottie.host/d036fd77-2e19-41c9-9d9a-ea7b23dfd792/8GWv13DLTr.lottie"
@@ -117,7 +121,6 @@ const Register = () => {
           />
         </div>
 
-        {/* Form Section */}
         <div className="w-full md:w-1/2 md:p-8">
           <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">
             Create an Account
@@ -153,6 +156,23 @@ const Register = () => {
                   required
                   className="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 />
+              </div>
+            </div>
+
+            {/* Role Selection Dropdown */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                Role
+              </label>
+              <div className="mt-1 relative rounded-md shadow-sm">
+                <select
+                  value={selectedRole}
+                  onChange={(e) => setSelectedRole(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="user">User</option>
+                  <option value="seller">Seller</option>
+                </select>
               </div>
             </div>
 
@@ -202,7 +222,6 @@ const Register = () => {
               Register
             </button>
 
-            {/* Error Message */}
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
             {/* Google Sign-In */}

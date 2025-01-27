@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Shield, User, MoreVertical, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -29,6 +29,7 @@ const ManageUsers = () => {
 
   return (
     <div className="p-6">
+      <ToastContainer></ToastContainer>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Manage Users</h1>
         <p className="text-gray-600">Manage user roles and permissions</p>
