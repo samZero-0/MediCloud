@@ -9,7 +9,7 @@ import { FaCartPlus } from "react-icons/fa";
 const Navbar = () => {
   const [hamburger, setHamburger] = useState(false);
   const { user, logOut } = useContext(AuthContext);
-  const { isDarkMode, toggleDarkMode, isAdmin, isUser, isSeller } = useContext(AuthContext);
+  const { isDarkMode, toggleDarkMode, isAdmin, isUser, isSeller, cart } = useContext(AuthContext);
   const [showLoginButton, setShowLoginButton] = useState(false);
 
   useEffect(() => {
@@ -67,8 +67,11 @@ const Navbar = () => {
           {/* Navbar End */}
           <div className="navbar-end flex items-center">
             <Link to="/cart">
-              <div className="px-11">
+              <div className="relative px-3">
                 <FaCartPlus className="text-2xl"></FaCartPlus>
+                <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-4 flex items-center justify-center text-xs">
+          {cart.length}
+        </div>
               </div>
             </Link>
             <div className="px-5">
@@ -78,9 +81,9 @@ const Navbar = () => {
                 <option value="">Bangla</option>
               </select>
             </div>
-            <div className="md:mr-8 mr-3">
+            {/* <div className="md:mr-8 mr-3">
               <DarkModeSwitch checked={isDarkMode} onChange={toggleDarkMode} size={30} />
-            </div>
+            </div> */}
             {user && user.email ? (
               <div className="dropdown dropdown-end">
                 <div tabIndex={0} className="btn btn-ghost btn-circle avatar">

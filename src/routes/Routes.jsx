@@ -21,6 +21,7 @@ import CategoryDetails from "../pages/CategoryDetails";
 import MedicineCategoryPage from "../pages/CategoryDetails";
 import AdminDashboard from "../pages/Admin/Homepage";
 import ManageUsers from "../pages/Admin/ManageUsers";
+import PrivateRoute from "./PrivateRoute";
 // import Login from "../pages/Login";
 // import Register from "../pages/Register";
 // import NotFound from "../pages/404Page"
@@ -68,15 +69,15 @@ import ManageUsers from "../pages/Admin/ManageUsers";
         },
         {
           path: '/checkoutPage',
-          element: <CheckoutPage></CheckoutPage>
+          element: <PrivateRoute><CheckoutPage></CheckoutPage></PrivateRoute>
         },
         {
           path: '/invoice',
-          element: <InvoicePage></InvoicePage>
+          element: <PrivateRoute><InvoicePage></InvoicePage></PrivateRoute>
         },
         {
           path: '/adminDashboard',
-          element: <AdminDashboard></AdminDashboard>
+          element: <PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>
         },
         {
           path: '/manageUser',
@@ -84,7 +85,7 @@ import ManageUsers from "../pages/Admin/ManageUsers";
         },
         {
           path: '/sellerDashboard',
-          element: <SellerDashboard></SellerDashboard>
+          element: <PrivateRoute><SellerDashboard></SellerDashboard></PrivateRoute>
         },
         {
           path: '/banner',
@@ -92,7 +93,7 @@ import ManageUsers from "../pages/Admin/ManageUsers";
         },
         {
           path: '/userDashboard',
-          element: <PaymentHistory></PaymentHistory>
+          element: <PrivateRoute><PaymentHistory></PaymentHistory></PrivateRoute>
         },
         {
           path: '/categories/:category',

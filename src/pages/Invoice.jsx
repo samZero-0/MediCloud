@@ -1,33 +1,62 @@
 import { useContext, useRef } from "react";
-import { useReactToPrint } from "react-to-print";
 import { AuthContext } from "../providers/AuthProvider";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable"; // For table support in PDF
+import { Download } from "lucide-react"; // For the download icon
 
 const InvoicePage = () => {
   const { invoice } = useContext(AuthContext);
-  console.log(invoice);
-
   const componentRef = useRef();
 
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: `Invoice_${invoice?.transactionId || "Unknown"}`,
-    onBeforePrint: () => {
-      if (!componentRef.current) {
-        console.error("Nothing to print, componentRef is null.");
-      }
-    },
-    onPrintError: (err) => {
-      console.error("Printing error:", err);
-    },
-  });
+  // Handle export to PDF
+  const handleExportPDF = () => {
+    if (!invoice) {
+      console.error("No invoice data available.");
+      return;
+    }
+
+    const doc = new jsPDF();
+
+    // Add invoice header
+    doc.setFontSize(18);
+    doc.text(`INVOICE #${invoice.transactionId || "N/A"}`, 10, 20);
+
+    // Add invoice details
+    doc.setFontSize(12);
+    doc.text(`Invoice Date: ${invoice.invoiceDate || "N/A"}`, 10, 30);
+    doc.text(`Due Date: ${invoice.dueDate || "N/A"}`, 10, 40);
+    doc.text(`Bill To: ${invoice.user || "Customer Name"}`, 10, 50);
+
+    // Add items table
+    const tableData = invoice.items.map((item) => [
+      item.medicineName,
+      item.quantity || 1,
+      `$${item.price}`,
+      `$${item.quantity * item.price || item.price}`,
+    ]);
+
+    doc.autoTable({
+      startY: 60,
+      head: [["Item", "Quantity", "Price", "Total"]],
+      body: tableData,
+    });
+
+    // Add total section
+    doc.setFontSize(14);
+    doc.text(`Total: $${invoice.total || "0.00"}`, 10, doc.autoTable.previous.finalY + 10);
+
+    // Save the PDF
+    doc.save(`Invoice_${invoice.transactionId || "Unknown"}.pdf`);
+  };
+
   if (!invoice) {
     return <div>Loading invoice data...</div>;
   }
-  return (
 
-    <div className="container mx-auto px-4 py-8 " ref={componentRef}>
+  return (
+    <div className="container mx-auto px-4 py-8" ref={componentRef}>
       <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="p-8" >
+        <div className="p-8">
           {/* Invoice Header */}
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -75,7 +104,7 @@ const InvoicePage = () => {
                   <td className="text-right py-2 px-4">{item.quantity || 1}</td>
                   <td className="text-right py-2 px-4">${item.price}</td>
                   <td className="text-right py-2 px-4">
-                    ${(item.quantity * item.price || item.price)}
+                    ${item.quantity * item.price || item.price}
                   </td>
                 </tr>
               ))}
@@ -98,12 +127,13 @@ const InvoicePage = () => {
           </div>
         </div>
 
-        {/* Print Button */}
+        {/* Download PDF Button */}
         <div className="p-8 bg-gray-50 border-t">
           <button
-            onClick={handlePrint}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+            onClick={handleExportPDF}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
+            <Download className="w-5 h-5" />
             Download Invoice as PDF
           </button>
         </div>

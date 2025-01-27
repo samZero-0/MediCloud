@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const ManageCategories = () => {
   const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newCategory, setNewCategory] = useState({ categoryName: '', categoryImage: '' });
+  const [newCategory, setNewCategory] = useState({ categoryName: "", categoryImage: "" });
   const [editingCategory, setEditingCategory] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Loader state
 
   // Fetch categories on component mount
   useEffect(() => {
@@ -14,17 +16,27 @@ const ManageCategories = () => {
 
   // Fetch categories from the backend
   const fetchCategories = async () => {
+    setIsLoading(true); // Start loading
     try {
-      const response = await axios.get('https://assignment-12-blue.vercel.app/allCategories');
+      const response = await axios.get("https://assignment-12-blue.vercel.app/allCategories");
       setCategories(response.data);
     } catch (error) {
-      console.error('Failed to fetch categories:', error);
+      console.error("Failed to fetch categories:", error);
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to fetch categories. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
   // Handle form submission (both add and update)
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading
     if (editingCategory) {
       // If editing, call handleUpdateCategory
       await handleUpdateCategory(editingCategory._id, newCategory);
@@ -32,17 +44,32 @@ const ManageCategories = () => {
       // If adding, call handleAddCategory
       await handleAddCategory();
     }
+    setIsLoading(false); // Stop loading
   };
 
   // Handle adding a new category
   const handleAddCategory = async () => {
     try {
-      await axios.post('https://assignment-12-blue.vercel.app/categories', newCategory);
+      await axios.post("https://assignment-12-blue.vercel.app/categories", newCategory);
       setIsModalOpen(false);
-      setNewCategory({ categoryName: '', categoryImage: '' });
-      fetchCategories(); 
+      setNewCategory({ categoryName: "", categoryImage: "" });
+      fetchCategories();
+
+      // Show success message
+      Swal.fire({
+        title: "Success!",
+        text: "Category added successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     } catch (error) {
-      console.error('Failed to add category:', error);
+      console.error("Failed to add category:", error);
+      Swal.fire({
+        title: "Success!",
+        text: "Category added successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -51,21 +78,64 @@ const ManageCategories = () => {
     try {
       await axios.patch(`https://assignment-12-blue.vercel.app/categories/${id}`, updatedData);
       setIsModalOpen(false);
-      setNewCategory({ categoryName: '', categoryImage: '' });
-      fetchCategories(); 
+      setNewCategory({ categoryName: "", categoryImage: "" });
+      fetchCategories();
+
+      // Show success message
+      Swal.fire({
+        title: "Success!",
+        text: "Category updated successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     } catch (error) {
-      console.error('Failed to update category:', error);
+      console.error("Failed to update category:", error);
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to update category. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
   // Handle deleting a category
   const handleDeleteCategory = async (id) => {
-    try {
-      await axios.delete(`https://assignment-12-blue.vercel.app/categories/${id}`);
-      fetchCategories(); // Refresh the list
-    } catch (error) {
-      console.error('Failed to delete category:', error);
-    }
+    // Confirm deletion
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setIsLoading(true); // Start loading
+        try {
+          await axios.delete(`https://assignment-12-blue.vercel.app/categories/${id}`);
+          fetchCategories(); // Refresh the list
+
+          // Show success message
+          Swal.fire({
+            title: "Deleted!",
+            text: "Category has been deleted.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } catch (error) {
+          console.error("Failed to delete category:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to delete category. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        } finally {
+          setIsLoading(false); // Stop loading
+        }
+      }
+    });
   };
 
   // Open modal for adding or editing a category
@@ -75,7 +145,7 @@ const ManageCategories = () => {
       setNewCategory({ categoryName: category.category, categoryImage: category.image });
     } else {
       setEditingCategory(null);
-      setNewCategory({ categoryName: '', categoryImage: '' });
+      setNewCategory({ categoryName: "", categoryImage: "" });
     }
     setIsModalOpen(true);
   };
@@ -91,6 +161,13 @@ const ManageCategories = () => {
       >
         Add Category
       </button>
+
+      {/* Loader */}
+      {isLoading && (
+        <div className="flex justify-center items-center mb-6">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        </div>
+      )}
 
       {/* Categories Table */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -136,7 +213,7 @@ const ManageCategories = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg w-96">
             <h2 className="text-xl font-bold mb-4">
-              {editingCategory ? 'Edit Category' : 'Add Category'}
+              {editingCategory ? "Edit Category" : "Add Category"}
             </h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
@@ -171,7 +248,7 @@ const ManageCategories = () => {
                   type="submit"
                   className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                 >
-                  {editingCategory ? 'Update' : 'Add'}
+                  {editingCategory ? "Update" : "Add"}
                 </button>
               </div>
             </form>
