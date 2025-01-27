@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../providers/AuthProvider';
+import { Helmet } from 'react-helmet';
 
 const MedicineCategoryPage = () => {
   const data = useLoaderData();
@@ -50,6 +51,11 @@ const MedicineCategoryPage = () => {
 
   return (
     <div className="container mx-auto p-4">
+        <Helmet>
+               
+               <title>Category Details</title>
+             
+           </Helmet>
       <h1 className="text-2xl font-bold mb-4">{category}</h1>
 
       {/* Search and Sort Controls */}
