@@ -31,7 +31,7 @@ const PaymentHistory = () => {
             <div className="flex justify-between items-center mb-4">
               <p className="text-lg font-semibold">Transaction ID: {transaction.transactionId}</p>
               <p
-                className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                className={`px-3 py-1 rounded-full text-sm font-semibold hidden md:flex ${
                   transaction.status === 'paid' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
                 }`}
               >

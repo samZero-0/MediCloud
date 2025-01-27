@@ -88,7 +88,7 @@ const Navbar = () => {
               <div className="dropdown dropdown-end">
                 <div tabIndex={0} className="btn btn-ghost btn-circle avatar">
                   <div className="w-10 rounded-full">
-                    <img src={user.photoURL?.split("?")[0]} alt="User Avatar" />
+                    <img src={user.photoURL} alt="User Avatar" />
                   </div>
                 </div>
                 <ul
@@ -127,8 +127,8 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/allFoods" onClick={() => setHamburger(false)}>
-                  All Foods
+                <Link to="/shop" onClick={() => setHamburger(false)}>
+                  Shop
                 </Link>
               </li>
               <li>
