@@ -6,52 +6,48 @@ import { toast } from "react-toastify";
 
 const ManageBanner = () => {
   const [advertisements, setAdvertisements] = useState([]);
-  const [activeAds, setActiveAds] = useState([]);
 
   // Fetch all banners on component mount
   useEffect(() => {
-    axios
-      .get("https://assignment-12-blue.vercel.app/banners")
-      .then((res) => setAdvertisements(res.data))
-      .catch((err) =>  err);
+    fetchBanners();
   }, []);
+
+  const fetchBanners = async () => {
+    try {
+      const res = await axios.get("https://assignment-12-blue.vercel.app/banners");
+      setAdvertisements(res.data);
+    } catch (err) {
+      toast.error("Failed to fetch banners");
+    }
+  };
 
   // Toggle active status of a banner
   const handleToggleActive = (id) => {
-    setAdvertisements((ads) =>
-      ads.map((ad) => {
-        if (ad._id === id) {
-          const newStatus = !ad.activeStatus;
-          // Update the activeAds array based on the new activeStatus
-          setActiveAds((prev) => {
-            if (newStatus) {
-              return [...prev, ad._id]; // Add to activeAds
-            } else {
-              return prev.filter((adId) => adId !== ad._id); // Remove from activeAds
-            }
-          });
-          return { ...ad, activeStatus: newStatus };
-        }
-        return ad;
-      })
+    setAdvertisements((prevAds) =>
+      prevAds.map((ad) => ({
+        ...ad,
+        activeStatus: ad._id === id ? !ad.activeStatus : ad.activeStatus
+      }))
     );
   };
 
-
-
   // Save the selected active banners
-  const handleSave = () => {
-    
+  const handleSave = async () => {
+    const activeAds = advertisements
+      .filter((ad) => ad.activeStatus)
+      .map((ad) => ad._id);
 
-    axios
-      .patch("https://assignment-12-blue.vercel.app/update-active-banners", { activeAds })
-      .then((res) => {
-        toast.success("Active ads updated successfully");
-      })
-      .catch((err) => {
-        
-        toast.error("Failed to update active ads");
-      });
+    try {
+      await axios.patch(
+        "https://assignment-12-blue.vercel.app/update-active-banners",
+        { activeAds }
+      );
+      toast.success("Active ads updated successfully");
+      // Refresh the banners to ensure we have the latest state
+      fetchBanners();
+    } catch (err) {
+      toast.error("Failed to update active ads");
+    }
   };
 
   return (
