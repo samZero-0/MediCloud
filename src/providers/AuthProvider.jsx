@@ -8,7 +8,7 @@ import {
     signInWithPopup,
     signOut,
 } from "firebase/auth";
-import { app } from "../../../frontend/src/firebase/firebase.config";
+import { app } from "../../src/firebase/firebase.config";
 import axios from "axios";
 import { toast } from "react-toastify";
 
