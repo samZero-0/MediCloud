@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Home, ShoppingCart, User, Settings, Package, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Menu, X, Home, ShoppingCart, User, Settings, Package, ChevronRight, ChevronLeft, CircleUserRound } from 'lucide-react';
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -12,10 +12,10 @@ const Sidebar = () => {
   // Navigation links with icons
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: <Home size={20} /> },
-    { name: 'Profile', path: '/dashboard/profile', icon: <Package size={20} /> },
-    { name: 'Shop', path: '/shop', icon: <ShoppingCart size={20} /> },
-    { name: 'Customers', path: '/customers', icon: <User size={20} /> },
-    { name: 'Settings', path: '/settings', icon: <Settings size={20} /> },
+    { name: 'Profile', path: '/dashboard/profile', icon: <CircleUserRound size={20}/> },
+    // { name: 'Shop', path: '/shop', icon: <ShoppingCart size={20} /> },
+    // { name: 'Customers', path: '/customers', icon: <User size={20} /> },
+    // { name: 'Settings', path: '/settings', icon: <Settings size={20} /> },
   ];
 
   return (
@@ -55,13 +55,15 @@ const Sidebar = () => {
         <div className={`p-4 border-t border-gray-700 ${isCollapsed ? 'text-center' : ''}`}>
           {!isCollapsed && (
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+              {/* <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                 <span className="text-white font-semibold">A</span>
-              </div>
-              <div>
+              </div> */}
+
+             <Link to='/'> <button className='btn'>Home</button></Link>
+              {/* <div>
                 <p className="text-sm font-medium">Admin</p>
                 <p className="text-xs text-gray-400">admin@medishop.com</p>
-              </div>
+              </div> */}
             </div>
           )}
           {isCollapsed && (

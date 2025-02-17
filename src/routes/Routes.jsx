@@ -77,10 +77,10 @@ import DashboardLayout from "../layouts/DashboardLayout";
           path: '/invoice',
           element: <PrivateRoute><InvoicePage></InvoicePage></PrivateRoute>
         },
-        {
-          path: '/adminDashboard',
-          element: <PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>
-        },
+        // {
+        //   path: '/adminDashboard',
+        //   element: <PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>
+        // },
         {
           path: '/manageUser',
           element: <ManageUsers></ManageUsers>
@@ -132,8 +132,12 @@ import DashboardLayout from "../layouts/DashboardLayout";
             
           },
           {
-            path: '/dashboard',
+            path: '',
             element: <PrivateRoute><PaymentHistory></PaymentHistory></PrivateRoute>
+          },
+          {
+            path: '/dashboard/adminDashboard',
+            element: <PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>
           },
         ]
       },

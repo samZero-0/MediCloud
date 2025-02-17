@@ -137,7 +137,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Mobile Header */}
-      <div className="lg:hidden bg-blue-800 text-white p-4 flex justify-between items-center">
+      {/* <div className="lg:hidden bg-blue-800 text-white p-4 flex justify-between items-center">
         <h1 className="text-xl font-semibold">Admin Panel</h1>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -145,10 +145,10 @@ const AdminDashboard = () => {
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-      </div>
+      </div> */}
 
-      <div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] lg:min-h-screen">
-        {/* Sidebar - Desktop */}
+      {/* <div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] lg:min-h-screen">
+        
         <div className="hidden lg:block bg-blue-800 text-white w-64 space-y-6 py-7 px-2">
           <div className="text-2xl font-semibold text-center mb-6">Admin Panel</div>
           <nav>
@@ -156,21 +156,21 @@ const AdminDashboard = () => {
           </nav>
         </div>
 
-        {/* Mobile Navigation Menu */}
+        
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-blue-800 text-white w-full">
             <nav className="px-2 py-4">
               <NavLinks />
             </nav>
           </div>
-        )}
+        )} */}
 
         {/* Main Content */}
         <div className="flex-1 p-4 md:p-6 lg:p-10">
           {renderComponent()}
         </div>
       </div>
-    </div>
+   
   );
 };
 

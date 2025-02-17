@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { Helmet } from 'react-helmet';
-import Sidebar from '../components/Dashboard/Sidebar';
+import Sidebar from '../components/Dashboard/UserSidebar';
+import { AuthContext } from "../providers/AuthProvider";
+import AdminSidebar from '../components/Dashboard/AdminSidebar';
 
 const DashboardLayout = () => {
+  const { isAdmin, isUser, isSeller } = useContext(AuthContext);
   return (
     <div className="flex h-screen bg-gray-100">
       <Helmet>
@@ -12,7 +15,10 @@ const DashboardLayout = () => {
       </Helmet>
       
       {/* Sidebar */}
-      <Sidebar />
+     {
+     isAdmin? <AdminSidebar></AdminSidebar> : <Sidebar></Sidebar>
+      }
+      
       
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden ml-16 md:ml-64">

@@ -23,11 +23,11 @@ const Navbar = () => {
   // Determine the dashboard path based on the user's role
   const getDashboardPath = () => {
     if (isAdmin) {
-      return "/adminDashboard";
+      return "/dashboard/adminDashboard";
     } else if (isSeller) {
       return "/sellerDashboard";
     } else if (isUser) {
-      return "/userDashboard";
+      return "/dashboard";
     } else {
       return "/userDashboard"; 
     }
@@ -100,7 +100,7 @@ const Navbar = () => {
                   </li> */}
                   <li>
                     {/* Dynamic Dashboard Link */}
-                    <Link to='/dashboard'>Dashboard</Link>
+                    <Link to={getDashboardPath()}>Dashboard</Link>
                   </li>
                   <li>
                     <button onClick={logOut}>Logout</button>
