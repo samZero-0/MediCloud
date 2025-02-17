@@ -96,7 +96,7 @@ const Navbar = () => {
                   className="menu dropdown-content bg-base-200 rounded-box z-[50] mt-2 w-52 p-2 shadow"
                 >
                   <li>
-                    <Link to="/myOrders">Update profile</Link>
+                    <Link to="/profile">Update profile</Link>
                   </li>
                   <li>
                     {/* Dynamic Dashboard Link */}

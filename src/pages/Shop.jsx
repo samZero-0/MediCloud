@@ -10,8 +10,9 @@ const ShopPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [medicines, setMedicines] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(8); // Increased for card layout
   const [sortOrder, setSortOrder] = useState("asc");
+  const [sortBy, setSortBy] = useState("price"); // Added sortBy state
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -46,12 +47,16 @@ const ShopPage = () => {
     )
   );
 
+  // Updated sorting function to handle multiple sort fields
   const sortedMedicines = filteredMedicines.sort((a, b) => {
-    if (sortOrder === "asc") {
-      return a.price - b.price;
-    } else {
-      return b.price - a.price;
+    if (sortBy === "price") {
+      return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
+    } else if (sortBy === "name") {
+      return sortOrder === "asc" 
+        ? a.medicineName.localeCompare(b.medicineName)
+        : b.medicineName.localeCompare(a.medicineName);
     }
+    return 0;
   });
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -65,17 +70,22 @@ const ShopPage = () => {
     setCurrentPage(1);
   };
 
-  const toggleSortOrder = () => {
-    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  const handleSort = (field) => {
+    if (sortBy === field) {
+      // If already sorting by this field, toggle order
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      // If sorting by a new field, set it and default to ascending
+      setSortBy(field);
+      setSortOrder("asc");
+    }
   };
 
   return (
     <div className="container mx-auto p-4">
-        <Helmet>
-               
-               <title>Shop</title>
-             
-           </Helmet>
+      <Helmet>
+        <title>Shop</title>
+      </Helmet>
       <h1 className="text-2xl font-bold mb-4">Medicine Shop</h1>
 
       {/* Search Bar */}
@@ -89,72 +99,83 @@ const ShopPage = () => {
         />
       </div>
 
-      {/* Sort by Price Button */}
-      <div className="mb-4">
+      {/* Sort Buttons */}
+      <div className="mb-4 flex flex-wrap gap-2">
         <button
-          onClick={toggleSortOrder}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          onClick={() => handleSort("price")}
+          className={`px-4 py-2 rounded-md  transition ${
+            sortBy === "price" ? "bg-black text-white" : "bg-gray-200 text-gray-700"
+          }`}
         >
-          Sort by Price ({sortOrder === "asc" ? "Low to High" : "High to Low"})
+          Sort by Price {sortBy === "price" && (sortOrder === "asc" ? "↑" : "↓")}
+        </button>
+        <button
+          onClick={() => handleSort("name")}
+          className={`px-4 py-2 rounded-md transition ${
+            sortBy === "name" ? "bg-black text-white" : "bg-gray-200 text-gray-700"
+          }`}
+        >
+          Sort by Name {sortBy === "name" && (sortOrder === "asc" ? "↑" : "↓")}
         </button>
       </div>
 
-      {/* Medicine Table */}
-      <table className="w-full border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border border-gray-300 p-2">Name</th>
-            <th className="border border-gray-300 p-2">Price</th>
-            <th className="border border-gray-300 p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentMedicines.map((medicine) => (
-            <tr key={medicine._id}>
-              <td className="border border-gray-300 p-2">{medicine.medicineName}</td>
-              <td className="border border-gray-300 p-2">${medicine.price}</td>
-              <td className="border border-gray-300 p-2">
+      {/* Card Layout for Medicines */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {currentMedicines.map((medicine) => (
+          <div
+            key={medicine._id}
+            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full border border-gray-200 hover:shadow-lg transition"
+          >
+            <div className="p-4 flex-grow">
+          <div className="w-full flex justify-center"><img src={medicine.image} className="w-full h-48 object-cover  rounded-sm"  alt="" /></div>
+              <h3 className="font-semibold text-lg mb-2 truncate">{medicine.medicineName}</h3>
+              <p className="text-[#14213D] font-bold text-xl">${medicine.price}</p>
+              <p className="text-sm text-gray-600 mt-2 truncate">{medicine.manufactureName}</p>
+            </div>
+            <div className="p-4 ">
+              <div className="flex space-x-2">
                 <button
                   onClick={() => openModal(medicine)}
-                  className="bg-blue-500 text-white px-2 py-1 rounded mr-2 hover:bg-blue-600"
+                  className="flex-1 bg-[#14213D] text-white px-3 py-2 rounded  transition"
                 >
-                  👁️
+                  Details
                 </button>
                 <button
                   onClick={() => addToCart(medicine)}
-                  className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+                  className="flex-1 bg-[#FCA311] text-white px-3 py-2 rounded  transition"
                 >
-                  Select
+                  Add to Cart
                 </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* Pagination */}
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
         <div>
-          <label>
+          <label className="flex items-center">
             Items per page:
             <select
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
               className="ml-2 p-1 border border-gray-300 rounded-md"
             >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
+              <option value={4}>4</option>
+              <option value={8}>8</option>
+              <option value={12}>12</option>
               <option value={20}>20</option>
             </select>
           </label>
         </div>
-        <div>
+        <div className="flex flex-wrap justify-center">
           {Array.from({ length: Math.ceil(filteredMedicines.length / itemsPerPage) }, (_, i) => (
             <button
               key={i + 1}
               onClick={() => paginate(i + 1)}
               className={`px-3 py-1 mx-1 border rounded-md ${
-                currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-white"
+                currentPage === i + 1 ? "bg-black text-white" : "bg-white hover:bg-gray-100"
               }`}
             >
               {i + 1}
@@ -163,9 +184,9 @@ const ShopPage = () => {
         </div>
       </div>
 
-      {/* Medicine Details Modal */}
+      {/* Medicine Details Modal - Unchanged */}
       {isModalOpen && selectedMedicine && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 overflow-y-auto z-50">
           <div className="bg-white p-6 rounded-lg max-w-2xl w-full">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-2xl font-bold text-gray-800">{selectedMedicine.medicineName}</h2>
@@ -270,18 +291,26 @@ const ShopPage = () => {
       )}
 
       {/* Cart Section */}
-      <div className="mt-4">
-        <h2 className="text-xl font-bold mb-2">Cart</h2>
+      <div className="mt-8 bg-gray-50 p-4 rounded-lg">
+        <h2 className="text-xl font-bold mb-4">Shopping Cart</h2>
         {cart.length === 0 ? (
           <p>Your cart is empty</p>
         ) : (
-          <ul>
-            {cart.map((item, index) => (
-              <li key={index} className="mb-2">
-                {item.medicineName} - ${item.price}
-              </li>
-            ))}
-          </ul>
+          <div>
+            <ul className="divide-y divide-gray-200">
+              {cart.map((item, index) => (
+                <li key={index} className="py-3 flex justify-between items-center">
+                  <span>{item.medicineName}</span>
+                  <span className="font-semibold">${item.price}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <p className="text-right font-bold text-lg">
+                Total: ${cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
+              </p>
+            </div>
+          </div>
         )}
       </div>
     </div>
