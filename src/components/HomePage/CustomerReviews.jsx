@@ -27,7 +27,7 @@ const reviews = [
 
 const CustomerReviews = () => {
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-blue-50">
+    <section className="py-16 ">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
           What Our Customers Say

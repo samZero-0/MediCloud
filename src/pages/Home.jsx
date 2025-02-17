@@ -6,6 +6,7 @@ import Discount from "../components/HomePage/Discount";
 import FeaturedProducts from "../components/HomePage/Featured";
 import {Helmet} from "react-helmet";
 import Newsletter from "../components/HomePage/NewsLetter";
+import RecentProducts from "../components/HomePage/RecentProducts";
 
 const Home = () => {
     return (
@@ -19,8 +20,9 @@ const Home = () => {
             <Banner></Banner>
             <CategoryCardSection></CategoryCardSection>
             <Discount></Discount>
-            <HealthTipsBlog></HealthTipsBlog>
+            <RecentProducts></RecentProducts>            
             <FeaturedProducts></FeaturedProducts>
+            <HealthTipsBlog></HealthTipsBlog>
             <Newsletter></Newsletter>
             <CustomerReviews></CustomerReviews>
           
