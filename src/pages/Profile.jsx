@@ -46,33 +46,36 @@ const UserProfile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-white py-12">
       <div className="max-w-4xl mx-auto px-4">
         {/* Profile Header */}
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="h-32 bg-[#19294D]"></div>
-          <div className="relative px-6 pb-6">
+          <div className="h-32 bg-[#19294D]">
+            
+          </div>
+          
+          <div className=" px-6 pb-6">
             <div className="flex flex-col sm:flex-row items-center sm:items-end -mt-16 sm:-mt-20 mb-4 sm:mb-8 sm:space-x-6">
+                
               <div className="relative group">
                 <img
                   src={user.image}
                   alt={user.name}
                   className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
                 />
-                <div className="absolute inset-0 rounded-full bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                  <Camera className="w-8 h-8 text-white" />
-                </div>
+              
               </div>
-              <div className="mt-4 sm:mt-0 text-center sm:text-left flex-grow">
-                <h1 className="text-3xl font-bold text-gray-800">{user.name}</h1>
-                <p className="text-gray-600 flex items-center justify-center sm:justify-start mt-2">
+              <div className="mt-6 sm:mt-0 text-center sm:text-left flex-grow">
+               
+                <p className="text-white flex items-center justify-center sm:justify-start mt-2 hidden">
                   <Clock className="w-4 h-4 mr-2" />
                   Member since {user.dateJoined}
                 </p>
+                <h1 className="text-3xl font-bold text-black">{user.name}</h1>
               </div>
               <button
                 onClick={handleEdit}
-                className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+                className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#FDB035] text-black rounded-lg transition-colors duration-200"
               >
                 <Edit2 className="w-4 h-4 mr-2" />
                 {isEditing ? "Save Changes" : "Edit Profile"}
