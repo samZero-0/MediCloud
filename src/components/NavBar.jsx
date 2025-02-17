@@ -95,12 +95,12 @@ const Navbar = () => {
                   tabIndex={0}
                   className="menu dropdown-content bg-base-200 rounded-box z-[50] mt-2 w-52 p-2 shadow"
                 >
-                  <li>
+                  {/* <li>
                     <Link to="/profile">Update profile</Link>
-                  </li>
+                  </li> */}
                   <li>
                     {/* Dynamic Dashboard Link */}
-                    <Link to={getDashboardPath()}>Dashboard</Link>
+                    <Link to='/dashboard'>Dashboard</Link>
                   </li>
                   <li>
                     <button onClick={logOut}>Logout</button>

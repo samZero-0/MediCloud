@@ -23,6 +23,7 @@ import AdminDashboard from "../pages/Admin/Homepage";
 import ManageUsers from "../pages/Admin/ManageUsers";
 import PrivateRoute from "./PrivateRoute";
 import UserProfile from "../pages/Profile";
+import DashboardLayout from "../layouts/DashboardLayout";
 // import Login from "../pages/Login";
 // import Register from "../pages/Register";
 // import NotFound from "../pages/404Page"
@@ -101,11 +102,7 @@ import UserProfile from "../pages/Profile";
           loader: ({params}) => fetch(`https://assignment-12-blue.vercel.app/allMedicines/${params.category}`),
           element: <MedicineCategoryPage></MedicineCategoryPage>
         },
-        {
-          path: '/profile',
-          element: <PrivateRoute><UserProfile></UserProfile></PrivateRoute>
-        }
-        
+       
 
 
 
@@ -123,4 +120,21 @@ import UserProfile from "../pages/Profile";
         element: <NotFound></NotFound>
       },
       
+      {
+        path: "/dashboard",
+        element: <DashboardLayout></DashboardLayout>,
+        children: [
+          {
+            
+              path: '/dashboard/profile',
+              element: <PrivateRoute><UserProfile></UserProfile></PrivateRoute>
+            
+            
+          },
+          {
+            path: '/dashboard',
+            element: <PrivateRoute><PaymentHistory></PaymentHistory></PrivateRoute>
+          },
+        ]
+      },
   ]);
