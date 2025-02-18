@@ -139,6 +139,10 @@ import DashboardLayout from "../layouts/DashboardLayout";
             path: '/dashboard/adminDashboard',
             element: <PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>
           },
+          {
+            path: '/dashboard/admin',
+            element: <PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>
+          },
         ]
       },
   ]);

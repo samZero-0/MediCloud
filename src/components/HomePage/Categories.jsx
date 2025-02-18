@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const CategoryCard = ({ category }) => (
   <Link to={`categories/${category.category}`}> 
-  <div  className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105 ">
+  <div  className="bg-white dark:bg-transparent dark:text-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105 ">
   <img
     src={category.image || "/placeholder.svg"}
     alt={category.category}

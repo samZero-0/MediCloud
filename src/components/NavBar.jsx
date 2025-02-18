@@ -81,9 +81,9 @@ const Navbar = () => {
                 <option value="">Bangla</option>
               </select>
             </div>
-            {/* <div className="md:mr-8 mr-3">
+            <div className="md:mr-8 mr-3">
               <DarkModeSwitch checked={isDarkMode} onChange={toggleDarkMode} size={30} />
-            </div> */}
+            </div>
             {user && user.email ? (
               <div className="dropdown dropdown-end">
                 <div tabIndex={0} className="btn btn-ghost btn-circle avatar">
