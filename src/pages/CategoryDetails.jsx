@@ -61,7 +61,7 @@ const MedicineCategoryPage = () => {
           <input
             type="text"
             placeholder="Search by medicine name..."
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-transparent"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -83,24 +83,24 @@ const MedicineCategoryPage = () => {
       {/* Responsive Table/Card View */}
       <div className="overflow-x-auto rounded-lg shadow">
         {/* Desktop Table View */}
-        <table className="hidden md:table w-full border-collapse bg-white">
-          <thead className="bg-gray-100">
+        <table className="hidden md:table w-full border-collapse bg-white dark:bg-transparent dark:border">
+          <thead className="bg-gray-100 dark:bg-transparent">
             <tr>
-              <th className="p-4 text-left">Medicine Name</th>
-              <th className="p-4 text-left">Manufacturer</th>
-              <th className="p-4 text-left">Price</th>
-              <th className="p-4 text-left">Dosage</th>
-              <th className="p-4 text-center">Actions</th>
+              <th className="p-4 text-left dark:text-white">Medicine Name</th>
+              <th className="p-4 text-left dark:text-white">Manufacturer</th>
+              <th className="p-4 text-left dark:text-white">Price</th>
+              <th className="p-4 text-left dark:text-white">Dosage</th>
+              <th className="p-4 text-center dark:text-white">Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredMedicines.map((medicine) => (
-              <tr key={medicine._id} className="border-b hover:bg-gray-50">
-                <td className="p-4">{medicine.medicineName}</td>
-                <td className="p-4">{medicine.manufactureName}</td>
-                <td className="p-4">${medicine.price}</td>
-                <td className="p-4">{medicine.dosage}</td>
-                <td className="p-4 flex justify-center space-x-3">
+              <tr key={medicine._id} className="border-b hover:bg-gray-600">
+                <td className="p-4 dark:text-white">{medicine.medicineName}</td>
+                <td className="p-4 dark:text-white">{medicine.manufactureName}</td>
+                <td className="p-4 dark:text-white">${medicine.price}</td>
+                <td className="p-4 dark:text-white">{medicine.dosage}</td>
+                <td className="p-4 dark:text-white flex justify-center space-x-3">
                   <button 
                     onClick={() => handleViewDetails(medicine)}
                     className="text-blue-500 hover:text-blue-700 text-xl"
