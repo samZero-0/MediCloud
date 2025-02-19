@@ -7,6 +7,7 @@ import ManageUsers from "./ManageUsers";
 import PaymentManagement from "./PaymentManagement";
 import SalesReport from "./SalesReport";
 import { Helmet } from "react-helmet";
+import { BarChart, Bar, PieChart, Pie, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const AdminDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
@@ -46,6 +47,25 @@ const AdminDashboard = () => {
     fetchTransactions();
   }, []);
 
+  // Prepare data for charts
+  const pieChartData = [
+    { name: 'Paid', value: paidTotal , fill: '#16a34a'  },
+    { name: 'Pending', value: pendingTotal, fill: '#dc2626'}
+  ];
+
+  // Group transactions by date for the line chart
+  const getLineChartData = () => {
+    const groupedData = transactions.reduce((acc, transaction) => {
+      const date = new Date(transaction.createdAt).toLocaleDateString();
+      if (!acc[date]) {
+        acc[date] = { date, amount: 0 };
+      }
+      acc[date].amount += transaction.amount;
+      return acc;
+    }, {});
+    return Object.values(groupedData);
+  };
+
   const renderComponent = () => {
     switch (activeComponent) {
       case "manage-users":
@@ -79,6 +99,46 @@ const AdminDashboard = () => {
                 <p className="text-xl md:text-2xl font-bold text-red-600">${pendingTotal.toFixed(2)}</p>
               </div>
             </div>
+
+            {/* Charts Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6">
+              {/* Payment Distribution Pie Chart */}
+              <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+                <h2 className="text-lg md:text-xl font-semibold text-gray-700 mb-4">Payment Distribution</h2>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={pieChartData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    >
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Revenue Trend Line Chart */}
+              <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+                <h2 className="text-lg md:text-xl font-semibold text-gray-700 mb-4">Revenue Trend</h2>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={getLineChartData()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="amount" stroke="#8884d8" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
             <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
               <h2 className="text-lg md:text-xl font-semibold text-gray-700 mb-4">Recent Activity</h2>
               <p className="text-gray-600">No recent activity.</p>
@@ -136,41 +196,10 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Mobile Header */}
-      {/* <div className="lg:hidden bg-blue-800 text-white p-4 flex justify-between items-center">
-        <h1 className="text-xl font-semibold">Admin Panel</h1>
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 hover:bg-blue-700 rounded"
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div> */}
-
-      {/* <div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] lg:min-h-screen">
-        
-        <div className="hidden lg:block bg-blue-800 text-white w-64 space-y-6 py-7 px-2">
-          <div className="text-2xl font-semibold text-center mb-6">Admin Panel</div>
-          <nav>
-            <NavLinks />
-          </nav>
-        </div>
-
-        
-        {isMobileMenuOpen && (
-          <div className="lg:hidden bg-blue-800 text-white w-full">
-            <nav className="px-2 py-4">
-              <NavLinks />
-            </nav>
-          </div>
-        )} */}
-
-        {/* Main Content */}
-        <div className="flex-1 p-4 md:p-6 lg:p-10">
-          {renderComponent()}
-        </div>
+      <div className="flex-1 p-4 md:p-6 lg:p-10">
+        {renderComponent()}
       </div>
-   
+    </div>
   );
 };
 

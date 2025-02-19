@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { 
   User, 
   Mail, 
@@ -13,23 +13,26 @@ import {
   Clock,
   AlertCircle
 } from 'lucide-react';
+import { AuthContext } from '../providers/AuthProvider';
 
 const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [user, setUser] = useState({
-    name: "David Mitchell",
-    email: "david.mitchell@example.com",
-    phone: "+1 (555) 123-4567",
-    address: "123 Healthcare Avenue, Medical District",
-    city: "San Francisco",
-    state: "CA",
-    zip: "94105",
-    dateJoined: "January 2023",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300&h=300",
-    prescriptions: 12,
-    orders: 24,
-    savedItems: 8
-  });
+  const {user} = useContext(AuthContext)
+
+  // const [user, setUser] = useState({
+  //   name: "David Mitchell",
+  //   email: "david.mitchell@example.com",
+  //   phone: "+1 (555) 123-4567",
+  //   address: "123 Healthcare Avenue, Medical District",
+  //   city: "San Francisco",
+  //   state: "CA",
+  //   zip: "94105",
+  //   dateJoined: "January 2023",
+  //   image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300&h=300",
+  //   prescriptions: 12,
+  //   orders: 24,
+  //   savedItems: 8
+  // });
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
@@ -59,7 +62,7 @@ const UserProfile = () => {
                 
               <div className="relative group">
                 <img
-                  src={user.image}
+                  src={user?.photoURL}
                   alt={user.name}
                   className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
                 />
@@ -67,11 +70,11 @@ const UserProfile = () => {
               </div>
               <div className="mt-6 sm:mt-0 text-center sm:text-left flex-grow">
                
-                <p className="text-white flex items-center justify-center sm:justify-start mt-2 hidden">
+                <p className="text-white  items-center justify-center sm:justify-start mt-2 hidden">
                   <Clock className="w-4 h-4 mr-2" />
                   Member since {user.dateJoined}
                 </p>
-                <h1 className="text-3xl font-bold text-black">{user.name}</h1>
+                <h1 className="text-3xl font-bold text-black">{user?.displayName}</h1>
               </div>
               <button
                 onClick={handleEdit}

@@ -13,9 +13,11 @@ const AdminSidebar = () => {
   const navItems = [
     { name: 'Dashboard', path: '/dashboard/admin', icon: <Home size={20} /> },
     { name: 'Profile', path: '/dashboard/profile', icon: <CircleUserRound size={20}/> },
-    { name: 'Banner', path: '/shop', icon: <ShoppingCart size={20} /> },
-    // { name: 'Customers', path: '/customers', icon: <User size={20} /> },
-    // { name: 'Settings', path: '/settings', icon: <Settings size={20} /> },
+    { name: 'Banner', path: '/dashboard/manageBanner', icon: <ShoppingCart size={20} /> },
+    { name: 'Categories', path: '/dashboard/manageCategories', icon: <User size={20} /> },
+    { name: 'Users', path: '/dashboard/manageUser', icon: <Settings size={20} /> },
+    { name: 'Payment Management', path: '/dashboard/paymentManage', icon: <Settings size={20} /> },
+    { name: 'Sales Report', path: '/dashboard/salesReport', icon: <Settings size={20} /> },
   ];
 
   return (

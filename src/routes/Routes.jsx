@@ -24,6 +24,9 @@ import ManageUsers from "../pages/Admin/ManageUsers";
 import PrivateRoute from "./PrivateRoute";
 import UserProfile from "../pages/Profile";
 import DashboardLayout from "../layouts/DashboardLayout";
+import ManageCategories from "../pages/Admin/ManageCategories";
+import PaymentManagement from "../pages/Admin/PaymentManagement";
+import SalesReport from "../pages/Admin/SalesReport";
 // import Login from "../pages/Login";
 // import Register from "../pages/Register";
 // import NotFound from "../pages/404Page"
@@ -143,6 +146,29 @@ import DashboardLayout from "../layouts/DashboardLayout";
             path: '/dashboard/admin',
             element: <PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>
           },
+          {
+            path: '/dashboard/manageCategories',
+            element: <PrivateRoute><ManageCategories></ManageCategories></PrivateRoute>
+          },
+          {
+            path: '/dashboard/manageBanner',
+            element: <PrivateRoute><ManageBanner></ManageBanner></PrivateRoute>
+          },
+          {
+            path: '/dashboard/manageUser',
+            element: <PrivateRoute><ManageUsers></ManageUsers></PrivateRoute>
+          },
+          {
+            path: '/dashboard/paymentManage',
+            element: <PrivateRoute><PaymentManagement></PaymentManagement></PrivateRoute>
+          },
+          {
+            path: '/dashboard/salesReport',
+            element: <PrivateRoute><SalesReport></SalesReport></PrivateRoute>
+          },
+          
+          
         ]
+        
       },
   ]);
