@@ -54,33 +54,34 @@ const Navbar = () => {
 
           {/* Navbar Center */}
           <div className="navbar-center hidden lg:flex">
-            <ul className="menu menu-horizontal px-1 text-lg dark:text-white">
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/shop">Shop</Link>
-              </li>
-            </ul>
+            
           </div>
 
           {/* Navbar End */}
           <div className="navbar-end flex items-center">
+          <ul className="menu menu-horizontal px-1  text-base dark:text-white">
+              <li className=" md:mr-3 md:flex hidden">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="md:flex hidden">
+                <Link to="/shop">Shop</Link>
+              </li>
+            </ul>
             <Link to="/cart">
-              <div className="relative px-3">
-                <FaCartPlus className="text-2xl"></FaCartPlus>
+              <div className="relative px-3 mr-6">
+                <FaCartPlus className="text-2xl dark:text-white"></FaCartPlus>
                 <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-4 flex items-center justify-center text-xs">
           {cart.length}
         </div>
               </div>
             </Link>
-            <div className="px-5">
+            {/* <div className="px-5">
               <select name="" id="" className="border rounded-xl p-2">
                 <option value="">Select Language</option>
                 <option value="">English</option>
                 <option value="">Bangla</option>
               </select>
-            </div>
+            </div> */}
             <div className="md:mr-8 mr-3">
               <DarkModeSwitch checked={isDarkMode} onChange={toggleDarkMode} size={30} />
             </div>

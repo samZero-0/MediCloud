@@ -53,7 +53,7 @@ const MedicineCategoryPage = () => {
         <title>Category Details</title>
       </Helmet>
       
-      <h1 className="text-2xl md:text-3xl font-bold mb-6">{category}</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-6 dark:text-white">{category}</h1>
 
       {/* Search and Sort Controls */}
       <div className="mb-6 flex flex-col lg:flex-row gap-4">
@@ -67,7 +67,7 @@ const MedicineCategoryPage = () => {
           />
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-gray-700 whitespace-nowrap">Sort by price:</span>
+          <span className="text-gray-700 whitespace-nowrap dark:text-white">Sort by price:</span>
           <select
             className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={sortOrder}

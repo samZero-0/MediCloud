@@ -29,7 +29,7 @@ const CustomerReviews = () => {
   return (
     <section className="py-16 ">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">
           What Our Customers Say
         </h2>
         
@@ -37,7 +37,7 @@ const CustomerReviews = () => {
           {reviews.map((review) => (
             <div
               key={review.id}
-              className="bg-white p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-300 relative"
+              className="bg-white p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-300 relative dark:bg-transparent dark:border"
             >
               <Quote className="absolute text-blue-100 w-12 h-12 -top-4 -left-4" />
               <div className="flex items-center mb-4">
@@ -47,7 +47,7 @@ const CustomerReviews = () => {
                   className="w-12 h-12 rounded-full object-cover mr-4"
                 />
                 <div>
-                  <h3 className="font-semibold text-gray-800">{review.name}</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-200">{review.name}</h3>
                   <div className="flex">
                     {[...Array(review.rating)].map((_, i) => (
                       <Star
@@ -58,7 +58,7 @@ const CustomerReviews = () => {
                   </div>
                 </div>
               </div>
-              <p className="text-gray-600 italic">{review.comment}</p>
+              <p className="text-gray-600 italic dark:text-gray-200">{review.comment}</p>
             </div>
           ))}
         </div>

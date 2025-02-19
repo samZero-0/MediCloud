@@ -28,12 +28,12 @@ const healthTips = [
 ]
 
 const BlogCard = ({ post }) => (
-  <div className="bg-white rounded-lg shadow-md overflow-hidden">
+  <div className="bg-white dark:bg-transparent dark:border  rounded-lg shadow-md overflow-hidden">
     <img src={post.image || "/placeholder.svg"} alt={post.title} className="w-full h-48 object-cover" />
     <div className="p-6">
-      <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-      <p className="text-gray-600 mb-4">{post.excerpt}</p>
-      <div className="flex justify-between items-center text-sm text-gray-500">
+      <h3 className="text-xl font-semibold mb-2 dark:text-white">{post.title}</h3>
+      <p className="text-gray-600 mb-4 dark:text-gray-200">{post.excerpt}</p>
+      <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
         <span>{post.author}</span>
         <span>{post.date}</span>
       </div>
@@ -45,15 +45,15 @@ const HealthTipsBlog = () => {
   return (
     <section className="py-12 ">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Health Tips Blog</h2>
+        <h2 className="text-3xl font-bold text-center mb-8 dark:text-white">Health Tips Blog</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {healthTips.map((post) => (
             <BlogCard key={post.id} post={post} />
           ))}
         </div>
         <div className="text-center mt-8">
-          <button className="bg-[#14213D] text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">
-            View All Health Tips
+          <button  className="bg-[#14213D] text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">
+           <a href="https://www.health.harvard.edu/blog" target="_blank">View more blogs</a>
           </button>
         </div>
       </div>

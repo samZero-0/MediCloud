@@ -48,7 +48,7 @@ const CheckoutForm = ({ onSuccess }) => {
         transactionId: paymentIntent.id,
         user: user?.email, 
         amount, 
-        cartItems: cart, // Assuming you have cart state/context
+        cartItems: cart, 
         date: new Date().toISOString(),
         status: paymentIntent.status
       })
@@ -84,7 +84,7 @@ const CheckoutForm = ({ onSuccess }) => {
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8">
       <div className="mb-4">
-        <label htmlFor="card-element" className="block text-gray-700 text-sm font-bold mb-2">
+        <label htmlFor="card-element" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">
           Credit or debit card
         </label>
         <div className="border rounded-md p-3">
@@ -102,7 +102,7 @@ const CheckoutForm = ({ onSuccess }) => {
         </div>
       </div>
       <div className="mb-4">
-        <p className="text-xl font-bold">Grand Total: ${amount.toFixed(2)}</p>
+        <p className="text-xl font-bold dark:text-white">Grand Total: ${amount.toFixed(2)}</p>
       </div>
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <button
@@ -141,10 +141,10 @@ const CheckoutPage = () => {
     <div className="container mx-auto px-4">
         <Helmet>
                
-               <title>Checkout</title>
+               <title >Checkout</title>
              
            </Helmet>
-      <h1 className="text-3xl font-bold text-center my-8">Checkout</h1>
+      <h1 className="text-3xl font-bold text-center my-8 dark:text-white">Checkout</h1>
       <Elements stripe={stripePromise}>
         <CheckoutForm onSuccess={handlePaymentSuccess} />
       </Elements>

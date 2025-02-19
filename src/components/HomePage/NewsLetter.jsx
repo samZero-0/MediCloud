@@ -15,7 +15,7 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="py-16 bg-[#14213D]">
+    <section className="py-16 bg-[#14213D] dark:bg-transparent">
       <div className="max-w-6xl mx-auto px-4">
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
           <div className="grid md:grid-cols-2 gap-8 items-center">

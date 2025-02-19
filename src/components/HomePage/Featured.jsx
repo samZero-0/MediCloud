@@ -50,7 +50,7 @@ const FeaturedProducts = () => {
   return (
     <section className="py-3">
     <div className="max-w-7xl mx-auto px-4">
-      <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+      <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">
         Trending Products
       </h2>
       
@@ -58,7 +58,7 @@ const FeaturedProducts = () => {
         {featuredProducts.map((product) => (
           <div
             key={product.id}
-            className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300"
+            className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300  dark:bg-transparent border"
           >
             <div className="relative">
               <img
@@ -74,18 +74,18 @@ const FeaturedProducts = () => {
             </div>
             
             <div className="p-6">
-              <span className="text-sm text-blue-600 font-medium">
+              <span className="text-sm text-blue-600 font-medium dark:text-gray-300">
                 {product.category}
               </span>
-              <h3 className="font-semibold text-xl text-gray-800 mt-2">
+              <h3 className="font-semibold text-xl text-gray-800 mt-2 dark:text-white">
                 {product.name}
               </h3>
-              <p className="text-gray-600 mt-2 text-sm">
+              <p className="text-gray-600 mt-2 text-sm dark:text-gray-200">
                 {product.description}
               </p>
               
               <div className="mt-4 flex items-center justify-between">
-                <span className="text-2xl font-bold text-gray-800">
+                <span className="text-2xl font-bold text-gray-800 dark:text-green-400">
                   ${product.price}
                 </span>
                 <button

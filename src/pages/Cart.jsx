@@ -44,7 +44,7 @@ const Cart = () => {
   
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-transparent flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -53,8 +53,8 @@ const Cart = () => {
           <div className="flex justify-center mb-4">
             <PackageOpen className="w-16 h-16 text-gray-400" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
-          <p className="text-gray-600 mb-6">Looks like you haven't added any items yet.</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">Your cart is empty</h2>
+          <p className="text-gray-600 mb-6 dark:text-gray-300">Looks like you haven't added any items yet.</p>
           <button
             onClick={() => navigate('/shop')}
             className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -68,7 +68,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0B132B] py-8 px-4 sm:px-6 lg:px-8">
         <Helmet>
                
                <title>Cart</title>
@@ -79,7 +79,7 @@ const Cart = () => {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <ShoppingCart className="w-8 h-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Shopping Cart</h1>
             <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
               {cart.length} items
             </span>
@@ -96,7 +96,7 @@ const Cart = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Cart Items */}
           <div className="flex-grow">
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-white dark:bg-transparent rounded-xl shadow-sm overflow-hidden">
               <div className="divide-y divide-gray-200">
                 {processedCart.map(item => (
                   <motion.div
@@ -113,8 +113,8 @@ const Cart = () => {
                       className="w-20 h-20 object-cover rounded-lg"
                     />
                     <div className="flex-grow">
-                      <h3 className="text-lg font-medium text-gray-900">{item.medicineName}</h3>
-                      <p className="text-sm text-gray-500">{item.manufactureName}</p>
+                      <h3 className="text-lg font-medium text-gray-900 dark:text-white">{item.medicineName}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-200">{item.manufactureName}</p>
                       <div className="mt-1 text-sm font-medium text-blue-600">
                         ${item.price} per unit
                       </div>
@@ -128,7 +128,7 @@ const Cart = () => {
                         >
                           <Minus className="w-4 h-4" />
                         </button>
-                        <span className="w-8 text-center font-medium">{item.quantity}</span>
+                        <span className="w-8 text-center font-medium ">{item.quantity}</span>
                         <button
                           onClick={() => handleQuantityChange(item._id, 1)}
                           className="p-1 hover:bg-white rounded-md transition-colors"
@@ -137,7 +137,7 @@ const Cart = () => {
                         </button>
                       </div>
                       <div className="text-right">
-                        <div className="font-medium">${(item.price * item.quantity).toFixed(2)}</div>
+                        <div className="font-medium dark:text-white">${(item.price * item.quantity).toFixed(2)}</div>
                         <button
                           onClick={() => handleRemoveItem(item._id)}
                           className="text-sm text-red-600 hover:text-red-700"

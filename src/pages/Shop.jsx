@@ -86,7 +86,7 @@ const ShopPage = () => {
       <Helmet>
         <title>Shop</title>
       </Helmet>
-      <h1 className="text-2xl font-bold mb-4">Medicine Shop</h1>
+      <h1 className="text-2xl font-bold mb-4 dark:text-white">Medicine Shop</h1>
 
       {/* Search Bar */}
       <div className="mb-4">
@@ -104,7 +104,7 @@ const ShopPage = () => {
         <button
           onClick={() => handleSort("price")}
           className={`px-4 py-2 rounded-md  transition ${
-            sortBy === "price" ? "bg-black text-white" : "bg-gray-200 text-gray-700"
+            sortBy === "price" ? "bg-[#3A506B] text-white" : "bg-gray-200 text-gray-700"
           }`}
         >
           Sort by Price {sortBy === "price" && (sortOrder === "asc" ? "↑" : "↓")}
@@ -112,7 +112,7 @@ const ShopPage = () => {
         <button
           onClick={() => handleSort("name")}
           className={`px-4 py-2 rounded-md transition ${
-            sortBy === "name" ? "bg-black text-white" : "bg-gray-200 text-gray-700"
+            sortBy === "name" ? "bg-[#3A506B] text-white" : "bg-gray-200 text-gray-700"
           }`}
         >
           Sort by Name {sortBy === "name" && (sortOrder === "asc" ? "↑" : "↓")}
@@ -124,13 +124,13 @@ const ShopPage = () => {
         {currentMedicines.map((medicine) => (
           <div
             key={medicine._id}
-            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full border border-gray-200 hover:shadow-lg transition"
+            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full border border-gray-200 hover:shadow-lg transition dark:bg-transparent"
           >
             <div className="p-4 flex-grow">
           <div className="w-full flex justify-center"><img src={medicine.image} className="w-full h-48 object-cover  rounded-sm"  alt="" /></div>
-              <h3 className="font-semibold text-lg mb-2 truncate">{medicine.medicineName}</h3>
-              <p className="text-[#14213D] font-bold text-xl">${medicine.price}</p>
-              <p className="text-sm text-gray-600 mt-2 truncate">{medicine.manufactureName}</p>
+              <h3 className="font-semibold text-lg mb-2 truncate dark:text-white mt-2">{medicine.medicineName}</h3>
+              <p className="text-[#14213D] font-bold text-xl dark:text-green-400">${medicine.price}</p>
+              <p className="text-sm text-gray-600 mt-2 truncate dark:text-white">{medicine.manufactureName}</p>
             </div>
             <div className="p-4 ">
               <div className="flex space-x-2">
@@ -155,12 +155,12 @@ const ShopPage = () => {
       {/* Pagination */}
       <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
         <div>
-          <label className="flex items-center">
+          <label className="flex items-center dark:text-white">
             Items per page:
             <select
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
-              className="ml-2 p-1 border border-gray-300 rounded-md"
+              className="ml-2 p-1 border border-gray-300 rounded-md dark:text-black"
             >
               <option value={4}>4</option>
               <option value={8}>8</option>
@@ -291,7 +291,7 @@ const ShopPage = () => {
       )}
 
       {/* Cart Section */}
-      <div className="mt-8 bg-gray-50 p-4 rounded-lg">
+      {/* <div className="mt-8 bg-gray-50 p-4 rounded-lg">
         <h2 className="text-xl font-bold mb-4">Shopping Cart</h2>
         {cart.length === 0 ? (
           <p>Your cart is empty</p>
@@ -312,7 +312,7 @@ const ShopPage = () => {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

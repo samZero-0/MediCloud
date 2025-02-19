@@ -83,7 +83,7 @@ const AdminSidebar = () => {
           className="bg-gray-800 text-white p-1 absolute top-20 right-0 translate-x-1/2 rounded-full shadow-md"
           aria-label="Expand sidebar"
         >
-          <ChevronRight size={20} />
+          {/* <ChevronRight size={20} /> */}
         </button>
       )}
     </div>

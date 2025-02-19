@@ -77,10 +77,10 @@ const discountProducts = [
 ]
 
 const ProductCard = ({ product }) => (
-  <div className="bg-white rounded-lg shadow-md overflow-hidden">
+  <div className="bg-white dark:bg-transparent rounded-lg shadow-md overflow-hidden dark:border">
     <img src={product.image || "/placeholder.svg"} alt={product.name} className="w-full h-48 object-cover" />
     <div className="p-4">
-      <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+      <h3 className="text-lg font-semibold mb-2 dark:text-white">{product.name}</h3>
       <div className="flex justify-between items-center">
         <div>
           <span className="text-gray-500 line-through">${product.originalPrice.toFixed(2)}</span>
@@ -98,7 +98,7 @@ const Discount = () => {
   return (
     <section className="py-12 ">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Discount Products</h2>
+        <h2 className="text-3xl font-bold text-center mb-8 dark:text-white">Discount Products</h2>
         <Swiper
           modules={[Navigation, Pagination, Scrollbar]}
           spaceBetween={20}
