@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../providers/AuthProvider";
 import { Helmet } from "react-helmet";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
 const PaymentHistory = () => {
   const [transactions, setTransactions] = useState([]);
@@ -43,6 +44,12 @@ const PaymentHistory = () => {
     setSelectedTransaction(null);
   };
 
+  // Prepare data for the chart
+  const chartData = transactions.map((transaction) => ({
+    date: new Date(transaction.date).toLocaleDateString(),
+    amount: transaction.amount,
+  }));
+
   if (isLoading) {
     return <div className="text-center py-10">Loading...</div>;
   }
@@ -56,6 +63,30 @@ const PaymentHistory = () => {
       <Helmet>
         <title>User Dashboard</title>
       </Helmet>
+
+      <div className="mt-8">
+        <h2 className="text-xl font-bold mb-4">Transaction Amounts Over Time</h2>
+        <BarChart
+          width={800}
+          height={300}
+          data={chartData}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="amount" fill="#8884d8" />
+        </BarChart>
+      </div>
+
+
       <h1 className="text-2xl font-bold mb-6">Payment History</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
@@ -98,6 +129,8 @@ const PaymentHistory = () => {
           </tbody>
         </table>
       </div>
+
+    
 
       {/* Modal for Transaction Details */}
       {isModalOpen && selectedTransaction && (
