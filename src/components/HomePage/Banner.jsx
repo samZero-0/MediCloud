@@ -7,6 +7,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ThreeDCardDemo } from './Demo';
 
 const Banner = () => {
   const [banner, setBanner] = useState([]);
@@ -42,10 +43,13 @@ const Banner = () => {
               {/* <h2 className="text-4xl font-bold text-black text-center">{b.title}</h2> */}
               {/* <h3 className="text-4xl font-bold text-black text-center">{b.description}</h3> */}
               </div>
+              {/* <ThreeDCardDemo></ThreeDCardDemo> */}
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
+
+
     </div>
   );
 };
