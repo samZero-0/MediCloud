@@ -206,7 +206,7 @@ const ShopPage = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-transparent min-h-screen">
       <Helmet>
         <title>MediShop - Browse Medicines</title>
       </Helmet>
@@ -226,9 +226,9 @@ const ShopPage = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar for Desktop */}
-          <aside className="lg:w-1/4 sticky top-4 self-start hidden lg:block bg-white p-5 rounded-lg shadow-md">
+          <aside className="lg:w-1/4 sticky top-4 self-start hidden lg:block bg-white dark:bg-transparent dark:text-white dark:border p-5 rounded-lg shadow-md">
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Filters</h2>
+              <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Filters</h2>
               <button 
                 onClick={resetFilters}
                 className="text-sm text-blue-600 hover:underline"
@@ -239,7 +239,7 @@ const ShopPage = () => {
             
             {/* Categories */}
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-700 mb-2">Categories</h3>
+              <h3 className="font-semibold text-gray-700 dark:text-white mb-2">Categories</h3>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {uniqueCategories.map(category => (
                   <label key={category} className="flex items-center cursor-pointer">
@@ -249,7 +249,7 @@ const ShopPage = () => {
                       onChange={() => toggleCategory(category)}
                       className="h-4 w-4 text-blue-600 rounded"
                     />
-                    <span className="ml-2 text-sm text-gray-700">{category}</span>
+                    <span className="ml-2 text-sm text-gray-700 dark:text-white">{category}</span>
                   </label>
                 ))}
               </div>
@@ -257,9 +257,9 @@ const ShopPage = () => {
             
             {/* Price Range */}
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-700 mb-2">Price Range</h3>
+              <h3 className="font-semibold text-gray-700 mb-2 dark:text-white">Price Range</h3>
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">$</span>
+                <span className="text-gray-600 dark:text-white">$</span>
                 <input
                   type="number"
                   min={priceRange.min}
@@ -268,7 +268,7 @@ const ShopPage = () => {
                   onChange={(e) => handlePriceChange("min", e.target.value)}
                   className="w-full border border-gray-300 rounded p-1 text-sm"
                 />
-                <span className="text-gray-600">to</span>
+                <span className="text-gray-600 dark:text-white">to</span>
                 <input
                   type="number"
                   min={filters.priceRange.min}
@@ -289,13 +289,13 @@ const ShopPage = () => {
                   onChange={toggleDiscountOnly}
                   className="h-4 w-4 text-blue-600 rounded"
                 />
-                <span className="ml-2 text-sm text-gray-700">Discount Only</span>
+                <span className="ml-2 text-sm text-gray-700 dark:text-white">Discount Only</span>
               </label>
             </div>
             
             {/* Manufacturers */}
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-700 mb-2">Manufacturers</h3>
+              <h3 className="font-semibold text-gray-700 mb-2 dark:text-white">Manufacturers</h3>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {uniqueManufacturers.map(manufacturer => (
                   <label key={manufacturer} className="flex items-center cursor-pointer">
@@ -305,7 +305,7 @@ const ShopPage = () => {
                       onChange={() => toggleManufacturer(manufacturer)}
                       className="h-4 w-4 text-blue-600 rounded"
                     />
-                    <span className="ml-2 text-sm text-gray-700 truncate">{manufacturer}</span>
+                    <span className="ml-2 text-sm text-gray-700 truncate dark:text-white">{manufacturer}</span>
                   </label>
                 ))}
               </div>
@@ -337,7 +337,7 @@ const ShopPage = () => {
                 
                 {/* Categories */}
                 <div className="mb-6">
-                  <h3 className="font-semibold text-gray-700 mb-2">Categories</h3>
+                  <h3 className="font-semibold text-gray-700 mb-2 dark:text-white">Categories</h3>
                   <div className="space-y-2 max-h-36 overflow-y-auto">
                     {uniqueCategories.map(category => (
                       <label key={category} className="flex items-center cursor-pointer">
@@ -347,7 +347,7 @@ const ShopPage = () => {
                           onChange={() => toggleCategory(category)}
                           className="h-4 w-4 text-blue-600 rounded"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{category}</span>
+                        <span className="ml-2 text-sm text-gray-700 dark:text-white">{category}</span>
                       </label>
                     ))}
                   </div>
@@ -355,9 +355,9 @@ const ShopPage = () => {
                 
                 {/* Price Range */}
                 <div className="mb-6">
-                  <h3 className="font-semibold text-gray-700 mb-2">Price Range</h3>
+                  <h3 className="font-semibold text-gray-700 mb-2 dark:text-white">Price Range</h3>
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-600">$</span>
+                    <span className="text-gray-600 dark:text-white">$</span>
                     <input
                       type="number"
                       min={priceRange.                      min}
@@ -366,7 +366,7 @@ const ShopPage = () => {
                       onChange={(e) => handlePriceChange("min", e.target.value)}
                       className="w-full border border-gray-300 rounded p-1 text-sm"
                     />
-                    <span className="text-gray-600">to</span>
+                    <span className="text-gray-600 dark:text-white">to</span>
                     <input
                       type="number"
                       min={filters.priceRange.min}
@@ -387,13 +387,13 @@ const ShopPage = () => {
                       onChange={toggleDiscountOnly}
                       className="h-4 w-4 text-blue-600 rounded"
                     />
-                    <span className="ml-2 text-sm text-gray-700">Discount Only</span>
+                    <span className="ml-2 text-sm text-gray-700 dark:text-white">Discount Only</span>
                   </label>
                 </div>
                 
                 {/* Manufacturers */}
                 <div className="mb-6">
-                  <h3 className="font-semibold text-gray-700 mb-2">Manufacturers</h3>
+                  <h3 className="font-semibold text-gray-700 mb-2 dark:text-white">Manufacturers</h3>
                   <div className="space-y-2 max-h-36 overflow-y-auto">
                     {uniqueManufacturers.map(manufacturer => (
                       <label key={manufacturer} className="flex items-center cursor-pointer">
@@ -403,7 +403,7 @@ const ShopPage = () => {
                           onChange={() => toggleManufacturer(manufacturer)}
                           className="h-4 w-4 text-blue-600 rounded"
                         />
-                        <span className="ml-2 text-sm text-gray-700 truncate">{manufacturer}</span>
+                        <span className="ml-2 text-sm text-gray-700 truncate dark:text-white">{manufacturer}</span>
                       </label>
                     ))}
                   </div>
@@ -421,7 +421,7 @@ const ShopPage = () => {
                 placeholder="Search by medicine name, generic name, company, etc."
                 value={searchQuery}
                 onChange={handleSearch}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-transparent"
               />
             </div>
             
@@ -446,7 +446,7 @@ const ShopPage = () => {
                 </button>
               </div>
               
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 dark:text-white">
                 Showing {currentMedicines.length} of {filteredMedicines.length} results
               </div>
             </div>
@@ -463,7 +463,7 @@ const ShopPage = () => {
                 {currentMedicines.map((medicine) => (
                   <div
                     key={medicine._id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full border border-gray-200 hover:shadow-lg transition"
+                    className="bg-white dark:bg-transparent dark:text-white rounded-lg shadow-md overflow-hidden flex flex-col h-full border border-gray-200 hover:shadow-lg transition"
                   >
                     <div className="p-4 flex-grow">
                       <div className="w-full flex justify-center">
@@ -474,8 +474,8 @@ const ShopPage = () => {
                         />
                       </div>
                       <h3 className="font-semibold text-lg mb-2 truncate mt-2">{medicine.medicineName}</h3>
-                      <p className="text-[#14213D] font-bold text-xl">${medicine.price}</p>
-                      <p className="text-sm text-gray-600 mt-2 truncate">{medicine.manufactureName}</p>
+                      <p className="text-[#14213D] font-bold text-xl dark:text-white">${medicine.price}</p>
+                      <p className="text-sm text-gray-600 mt-2 truncate dark:text-white">{medicine.manufactureName}</p>
                     </div>
                     <div className="p-4">
                       <div className="flex space-x-2">
@@ -501,12 +501,12 @@ const ShopPage = () => {
             {/* Pagination */}
             <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
               <div>
-                <label className="flex items-center">
+                <label className="flex items-center dark:text-white">
                   Items per page:
                   <select
                     value={itemsPerPage}
                     onChange={handleItemsPerPageChange}
-                    className="ml-2 p-1 border border-gray-300 rounded-md"
+                    className="ml-2 p-1 border border-gray-300 rounded-md dark:bg-transparent"
                   >
                     <option value={4}>4</option>
                     <option value={8}>8</option>
@@ -536,12 +536,12 @@ const ShopPage = () => {
       {/* Medicine Details Modal */}
       {isModalOpen && selectedMedicine && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 overflow-y-auto z-50">
-          <div className="bg-white p-6 rounded-lg max-w-2xl w-full">
+          <div className="bg-white dark:bg-black p-6 rounded-lg max-w-2xl w-full">
             <div className="flex justify-between items-start mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">{selectedMedicine.medicineName}</h2>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{selectedMedicine.medicineName}</h2>
               <button
                 onClick={closeModal}
-                className="text-gray-600 hover:text-gray-800 text-xl"
+                className="text-gray-600 dark:text-white hover:text-gray-800 text-3xl"
               >
                 ×
               </button>
@@ -554,7 +554,7 @@ const ShopPage = () => {
                   alt={selectedMedicine.medicineName}
                   className="w-full h-64 object-cover rounded-lg mb-4"
                 />
-                <div className="bg-blue-50 p-4 rounded-lg">
+                <div className="bg-blue-50 dark:bg-black dark:text-white p-4 rounded-lg">
                   <p className="text-2xl font-bold text-blue-600 mb-2">
                     ${selectedMedicine.price}
                   </p>
@@ -568,17 +568,17 @@ const ShopPage = () => {
 
               <div className="space-y-4">
                 <div>
-                  <h3 className="font-semibold text-gray-700">Category</h3>
-                  <p className="text-gray-600">{selectedMedicine.category}</p>
+                  <h3 className="font-semibold text-gray-700 dark:text-white ">Category</h3>
+                  <p className="text-gray-600 dark:text-white">{selectedMedicine.category}</p>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-700">Symptoms</h3>
+                  <h3 className="font-semibold text-gray-700 dark:text-white">Symptoms</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedMedicine.symptoms?.map((symptom, index) => (
                       <span 
                         key={index}
-                        className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-sm"
+                        className="bg-gray-100  text-gray-700 px-2 py-1 rounded-full text-sm"
                       >
                         {symptom}
                       </span>
@@ -587,33 +587,33 @@ const ShopPage = () => {
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-700">Dosage</h3>
-                  <p className="text-gray-600">{selectedMedicine.dosage}</p>
+                  <h3 className="font-semibold text-gray-700 dark:text-white">Dosage</h3>
+                  <p className="text-gray-600 dark:text-white">{selectedMedicine.dosage}</p>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-700">Manufacturer</h3>
-                  <p className="text-gray-600">{selectedMedicine.manufactureName}</p>
+                  <h3 className="font-semibold text-gray-700 dark:text-white">Manufacturer</h3>
+                  <p className="text-gray-600 dark:text-white">{selectedMedicine.manufactureName}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <h3 className="font-semibold text-gray-700">Expiry Date</h3>
-                    <p className="text-gray-600">
+                    <h3 className="font-semibold text-gray-700 dark:text-white">Expiry Date</h3>
+                    <p className="text-gray-600 dark:text-white">
                       {new Date(selectedMedicine.expireDate).toLocaleDateString()}
                     </p>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-700">Created Date</h3>
-                    <p className="text-gray-600">
+                    <h3 className="font-semibold text-gray-700 dark:text-white">Created Date</h3>
+                    <p className="text-gray-600 dark:text-white">
                       {new Date(selectedMedicine.createDate).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-700">Seller</h3>
-                  <p className="text-gray-600">{selectedMedicine.sellerName}</p>
+                  <h3 className="font-semibold text-gray-700 dark:text-white">Seller</h3>
+                  <p className="text-gray-600 dark:text-white">{selectedMedicine.sellerName}</p>
                 </div>
               </div>
             </div>
@@ -621,7 +621,7 @@ const ShopPage = () => {
             <div className="mt-6 flex justify-end gap-4">
               <button
                 onClick={closeModal}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 dark:text-white"
               >
                 Close
               </button>

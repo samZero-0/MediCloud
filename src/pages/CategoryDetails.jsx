@@ -157,7 +157,7 @@ const MedicineCategoryPage = () => {
       {/* Medicine Details Modal */}
       {modalOpen && selectedMedicine && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto relative">
+          <div className="bg-white dark:bg-black p-6 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto relative">
             <button 
               onClick={() => setModalOpen(false)}
               className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-xl"
@@ -171,9 +171,9 @@ const MedicineCategoryPage = () => {
                 className="w-full h-48 object-cover rounded-lg"
               />
               <div className="space-y-2">
-                <h2 className="text-xl font-bold">{selectedMedicine.medicineName}</h2>
-                <div className="grid grid-cols-1 gap-2 text-sm">
-                  <p><span className="font-semibold">Category:</span> {selectedMedicine.category}</p>
+                <h2 className="text-xl dark:text-white font-bold">{selectedMedicine.medicineName}</h2>
+                <div className="grid grid-cols-1 gap-2 text-sm dark:text-white">
+                  <p><span className="font-semibold dark:text-white">Category:</span> {selectedMedicine.category}</p>
                   <p><span className="font-semibold">Manufacturer:</span> {selectedMedicine.manufactureName}</p>
                   <p><span className="font-semibold">Seller:</span> {selectedMedicine.sellerName}</p>
                   <p><span className="font-semibold">Price:</span> ${selectedMedicine.price}</p>
