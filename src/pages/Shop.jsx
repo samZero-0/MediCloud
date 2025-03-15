@@ -11,7 +11,12 @@ const ShopPage = () => {
   const [medicines, setMedicines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+    
+  },[])
+
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);

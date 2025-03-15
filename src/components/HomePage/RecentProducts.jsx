@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShoppingCart, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const products = [
   {
@@ -78,12 +79,14 @@ const RecentProducts = () => {
                   <span className="text-2xl font-bold text-gray-800 dark:text-green-400">
                     ${product.price}
                   </span>
-                  <button
+                 <Link to="/shop">
+                 <button
                     className="flex items-center space-x-2 bg-[#FCA311] hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
                   >
                     <ShoppingCart className="w-5 h-5" />
-                    <span>Add</span>
+                    <span>Buy now</span>
                   </button>
+                 </Link>
                 </div>
               </div>
             </div>
