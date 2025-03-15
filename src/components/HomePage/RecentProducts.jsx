@@ -39,7 +39,7 @@ const products = [
 const RecentProducts = () => {
   return (
     <section className="py-3 ">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-8xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white ">
           Recent Products
         </h2>
