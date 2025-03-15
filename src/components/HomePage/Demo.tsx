@@ -14,7 +14,7 @@ export function ThreeDCardDemo() {
           translateZ="50"
           className="text-xl  font-bold text-white dark:text-white"
         >
-          Buy Medicine in one click
+          
         </CardItem>
      
        </div>
