@@ -44,7 +44,7 @@ const MedicalEquipmentBanner = () => {
           <div className="relative h-full">
             <div className="absolute inset-0">
               <img 
-                src="/public/banner1.png" 
+                src="/banner1.png" 
                 alt="Modern operating room with advanced equipment" 
                 className="w-full h-full object-cover"
               />

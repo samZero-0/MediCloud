@@ -68,16 +68,16 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0B132B] py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-transparent py-8 px-4 sm:px-6 lg:px-8">
         <Helmet>
                
                <title>Cart</title>
              
            </Helmet>
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto ">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between mb-8 ">
+          <div className="flex items-center gap-3 ">
             <ShoppingCart className="w-8 h-8 text-blue-600" />
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Shopping Cart</h1>
             <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
@@ -93,10 +93,10 @@ const Cart = () => {
           </button>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8 ">
           {/* Cart Items */}
           <div className="flex-grow">
-            <div className="bg-white dark:bg-transparent rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-white dark:border dark:bg-transparent rounded-xl shadow-sm overflow-hidden">
               <div className="divide-y divide-gray-200">
                 {processedCart.map(item => (
                   <motion.div
@@ -154,20 +154,20 @@ const Cart = () => {
 
           {/* Order Summary */}
           <div className="w-full lg:w-96">
-            <div className="bg-white rounded-xl shadow-sm p-6 sticky top-8">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">Order Summary</h2>
+            <div className="bg-white dark:bg-transparent dark:border rounded-xl shadow-sm p-6 sticky top-8">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Order Summary</h2>
               <div className="space-y-4">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="text-gray-600 dark:text-white ">Subtotal</span>
+                  <span className="font-medium dark:text-white ">${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Tax (10%)</span>
-                  <span className="font-medium">${tax.toFixed(2)}</span>
+                  <span className="text-gray-600 dark:text-white ">Tax (10%)</span>
+                  <span className="font-medium dark:text-white ">${tax.toFixed(2)}</span>
                 </div>
                 <div className="border-t pt-4">
                   <div className="flex justify-between">
-                    <span className="text-base font-medium">Total</span>
+                    <span className="text-base font-medium dark:text-white ">Total</span>
                     <span className="text-lg font-bold text-blue-600">${total.toFixed(2)}</span>
                   </div>
                 </div>

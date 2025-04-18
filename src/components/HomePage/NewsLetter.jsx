@@ -17,16 +17,16 @@ const Newsletter = () => {
   return (
     <section className="py-16 bg-[#14213D] dark:bg-transparent">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+        <div className="bg-white dark:bg-transparent dark:border rounded-2xl shadow-xl p-8 md:p-12">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
                 Subscribe & Save
               </h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-6 dark:text-white">
                 Join our subscription program and get:
               </p>
-              <ul className="space-y-4">
+              <ul className="space-y-4 ">
                 {[
                   'Monthly medicine delivery at your doorstep',
                   '15% off on all regular purchases',
@@ -35,7 +35,7 @@ const Newsletter = () => {
                 ].map((benefit, index) => (
                   <li key={index} className="flex items-center space-x-3">
                     <Check className="text-green-500 w-5 h-5" />
-                    <span className="text-gray-700">{benefit}</span>
+                    <span className="text-gray-700 dark:text-gray-300">{benefit}</span>
                   </li>
                 ))}
               </ul>
